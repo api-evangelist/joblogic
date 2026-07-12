@@ -1,0 +1,56 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Joblogic
+providerId: joblogic
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Field Service Management
+- SaaS
+- Rate Limiting
+- Quotas
+description: >-
+  Joblogic applies rate limits to every endpoint of its resource servers. Per
+  the published API documentation, by default all endpoints are limited to up
+  to 100 requests per minute, though the effective limit can vary per client
+  and Joblogic notes it is subject to change without notice. When the limit is
+  exceeded, Joblogic resource servers respond with HTTP 429 Too Many Requests
+  and the client is blocked from those endpoints for a period of time. Access
+  tokens issued by the IdentityServer expire after one hour, after which
+  requests return 401 Unauthorized until a new token is obtained.
+notes: >-
+  The 100 requests/minute default is documented but described as varying per
+  client and changeable without notice; confirm your account's specific limits
+  with Joblogic. Clients should implement exponential backoff with jitter on
+  429 responses and refresh the OAuth token before the one-hour expiry.
+sources:
+- https://apidocs.joblogic.com/
+- https://support.joblogic.com/docs/api-access
+responseCodes:
+  throttled: 429
+  unauthorized: 401
+limits:
+- name: Default Endpoint Rate Limit
+  scope: client
+  metric: requests
+  limit: up to 100 per minute (default; varies per client, subject to change)
+  notes: Applied to all resource-server endpoints by default per the API documentation.
+- name: Token Lifetime
+  scope: client
+  metric: minutes
+  limit: 60
+  notes: OAuth2 access tokens expire one hour after issue; expired tokens return 401.
+policies:
+- name: Throttling
+  description: Exceeding the per-client request rate returns HTTP 429 Too Many Requests and temporarily blocks access to the affected endpoints.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter on 429 responses and avoid bursting above the documented per-minute limit.
+- name: Token Refresh
+  description: Obtain a fresh client-credentials access token before the one-hour expiry to avoid 401 Unauthorized responses.
+- name: IP Allowlisting
+  description: API access is gated behind Joblogic's firewall; only allowlisted public IP addresses can reach the resource servers.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

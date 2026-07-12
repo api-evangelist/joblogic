@@ -1,0 +1,113 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Joblogic
+providerId: joblogic
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Field Service Management
+- SaaS
+- Subscription
+- Per User
+- Plans
+description: >-
+  Joblogic is sold as a per-user, per-month SaaS subscription for the field
+  service management platform, typically billed annually and tiered by feature
+  set (entry / standard through to higher tiers that add contracts, PPM,
+  compliance, stock, and procurement). Published third-party sources place the
+  entry tier around GBP 45 per user per month billed annually; higher and
+  enterprise tiers are quote-based. Joblogic does not publish a fixed public
+  price list - the official pricing page routes to a demo/quote, so exact
+  per-tier rates are not reconciled here. API access is not a separately
+  metered add-on with public list pricing; it is provisioned to existing
+  Joblogic customers (Client ID / Secret / Tenant ID plus IP allowlisting)
+  as part of their account, subject to Joblogic's integration onboarding
+  process.
+notes: >-
+  Numbers below are indicative from public third-party sources and vary by
+  region (GBP vs USD), user count, contract term, and tier. Verify current
+  tiers and rates directly with Joblogic sales during reconciliation. Joblogic
+  also charges one-off implementation / onboarding and optional custom
+  integration development fees (a 50% deposit is taken before custom
+  integration work begins).
+sources:
+- https://www.joblogic.com/pricing/
+- https://www.joblogic.com/marketplace/api-access
+- https://support.joblogic.com/docs/api-access
+- https://apidocs.joblogic.com/
+plans:
+- id: joblogic-subscription
+  name: Joblogic Subscription (Per User)
+  type: paid
+  description: >-
+    Core Joblogic field service management subscription, priced per user per
+    month and typically billed annually. Entry tier reported from around
+    GBP 45 per user per month; scales with users and selected feature tier.
+  entries:
+  - label: Per User Subscription
+    name: per_user_subscription
+    type: recurring
+    metric: user
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from ~GBP 45 per user / month (billed annually; varies by tier and region)
+    userMultiplied: true
+  elements:
+  - name: Job Management
+  - name: Scheduling and Dispatch
+  - name: Mobile Workforce App
+  - name: Customers, Sites and Assets
+  - name: Quotes and Invoicing
+- id: joblogic-higher-tier
+  name: Joblogic Higher Tier
+  type: paid
+  description: >-
+    Higher-feature tier adding capabilities such as PPM / maintenance
+    contracts, stock control, compliance, forms, and procurement. Quote-based
+    per-user pricing above the entry tier.
+  entries:
+  - label: Per User Subscription
+    name: higher_tier_per_user
+    type: recurring
+    metric: user
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: quote-based per user / month (see pricing page / sales)
+    userMultiplied: true
+  elements:
+  - name: PPM and Maintenance Contracts
+  - name: Stock Control
+  - name: Compliance and Forms
+  - name: Procurement and Purchase Orders
+- id: joblogic-enterprise
+  name: Enterprise / Custom
+  type: enterprise
+  description: >-
+    Custom enterprise agreement for larger deployments - negotiated per-user
+    pricing, custom integration development, onboarding, SLAs, and support.
+    Contact Joblogic.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: API Access and Custom Integrations
+  - name: SLAs and Support
+  - name: Implementation and Onboarding
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

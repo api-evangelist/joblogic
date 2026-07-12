@@ -1,0 +1,1482 @@
+openapi: 3.0.3
+info:
+  title: Joblogic API
+  description: >-
+    The Joblogic API is the REST interface to the Joblogic cloud field service
+    management (FSM) platform, covering customers, contacts, sites, assets,
+    jobs, engineer visits, engineers, quotes, and invoices for trades, service,
+    and maintenance contractors. All resource paths sit under `/api/v1`.
+
+
+    Access model: Joblogic API access is customer-provisioned and gated. A
+    caller is issued a Client ID, Client Secret, and Tenant ID by Joblogic, and
+    the caller's public IP addresses are allowlisted behind Joblogic's firewall
+    before requests are accepted. Integrations are first developed against a
+    per-customer UAT sandbox (web app at https://uat.joblogic.com, API host
+    https://uatapi.joblogic.com) and then promoted to production.
+
+
+    Authentication: Each request must carry a Bearer access token obtained from
+    the Joblogic IdentityServer token endpoint using the OAuth2
+    client-credentials grant (client_id, client_secret, grant_type, scope).
+    Access tokens expire after one hour; expired or missing tokens return
+    401 Unauthorized.
+
+
+    Multi-tenancy: Most operations require a `tenantId` (the caller's Joblogic
+    tenant, a GUID) supplied as a query parameter.
+
+
+    Modeling note: This document is modeled by API Evangelist from Joblogic's
+    published Postman documentation at https://apidocs.joblogic.com/. Endpoint
+    paths, methods, and the auth flow are confirmed from that collection.
+    Request and response schemas are representative - the live API is
+    IP-allowlisted, so payload bodies could not be exercised directly and are
+    illustrative rather than exhaustive.
+  version: v1
+  contact:
+    name: Joblogic Support
+    url: https://support.joblogic.com/docs/api-access
+    email: support@joblogic.com
+servers:
+  - url: https://api.joblogic.com/api/v1
+    description: >-
+      Production API host (live; firewall / IP-allowlisted, customer-provisioned).
+      The exact production host is confirmed to callers during onboarding.
+  - url: https://uatapi.joblogic.com/api/v1
+    description: UAT sandbox API host used for integration development.
+security:
+  - oauth2ClientCredentials: []
+tags:
+  - name: Customers
+    description: Customer account records.
+  - name: Contacts
+    description: Contacts attached to customers, sites, suppliers, and subcontractors.
+  - name: Sites
+    description: Physical service locations belonging to a customer.
+  - name: Assets
+    description: Equipment and plant assets located at sites.
+  - name: Jobs
+    description: Work orders and their costs.
+  - name: Visits
+    description: Engineer visits scheduled against jobs.
+  - name: Engineers
+    description: Field engineers / mobile workforce.
+  - name: Quotes
+    description: Quotes and estimates.
+  - name: Invoices
+    description: Standard, customer-grouped, and PPM invoices.
+paths:
+  /Customer/GetAll:
+    post:
+      operationId: searchCustomers
+      tags:
+        - Customers
+      summary: Search customers
+      description: Searches customers by keyword, tags, and active status.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching customers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /Customer:
+    get:
+      operationId: getCustomerByUniqueId
+      tags:
+        - Customers
+      summary: Get a customer by unique ID
+      description: Retrieves a customer by its unique GUID.
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IncludeAdditionalDetails'
+      responses:
+        '200':
+          description: The requested customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createCustomer
+      tags:
+        - Customers
+      summary: Create a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: The created customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updateCustomer
+      tags:
+        - Customers
+      summary: Update a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: The updated customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteCustomer
+      tags:
+        - Customers
+      summary: Delete a customer
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /Customer/GetById:
+    get:
+      operationId: getCustomerById
+      tags:
+        - Customers
+      summary: Get a customer by integer ID
+      parameters:
+        - $ref: '#/components/parameters/IntId'
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IncludeAdditionalDetails'
+      responses:
+        '200':
+          description: The requested customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Customer/SetStatus:
+    put:
+      operationId: setCustomerStatus
+      tags:
+        - Customers
+      summary: Set customer status
+      description: Activates or deactivates a customer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetStatusRequest'
+      responses:
+        '200':
+          description: Status updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Contact:
+    post:
+      operationId: createContact
+      tags:
+        - Contacts
+      summary: Create a contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+      responses:
+        '200':
+          description: The created contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateContact
+      tags:
+        - Contacts
+      summary: Update a contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+      responses:
+        '200':
+          description: The updated contact.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteContact
+      tags:
+        - Contacts
+      summary: Delete a contact
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Contact/GetContactByEntityId:
+    get:
+      operationId: getContactsByEntityId
+      tags:
+        - Contacts
+      summary: Get contacts by parent entity
+      description: Lists contacts attached to a parent entity (customer, site, supplier, or subcontractor) by its unique ID.
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - name: entityId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of contacts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Site/GetAll:
+    post:
+      operationId: searchSites
+      tags:
+        - Sites
+      summary: Search sites
+      description: Searches sites by keyword, tags, customer, and active status.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching sites.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /Site:
+    get:
+      operationId: getSiteByUniqueId
+      tags:
+        - Sites
+      summary: Get a site by unique ID
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IncludeAdditionalDetails'
+      responses:
+        '200':
+          description: The requested site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createSite
+      tags:
+        - Sites
+      summary: Create a site
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Site'
+      responses:
+        '200':
+          description: The created site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updateSite
+      tags:
+        - Sites
+      summary: Update a site
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Site'
+      responses:
+        '200':
+          description: The updated site.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteSite
+      tags:
+        - Sites
+      summary: Delete a site
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Site/GetById:
+    get:
+      operationId: getSiteById
+      tags:
+        - Sites
+      summary: Get a site by integer ID
+      parameters:
+        - $ref: '#/components/parameters/IntId'
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IncludeAdditionalDetails'
+      responses:
+        '200':
+          description: The requested site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Asset/GetAll:
+    post:
+      operationId: searchAssets
+      tags:
+        - Assets
+      summary: Search assets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching assets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /Asset:
+    get:
+      operationId: getAssetByUniqueId
+      tags:
+        - Assets
+      summary: Get an asset by unique ID
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IncludeAdditionalDetails'
+      responses:
+        '200':
+          description: The requested asset.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createAsset
+      tags:
+        - Assets
+      summary: Create an asset
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asset'
+      responses:
+        '200':
+          description: The created asset.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateAsset
+      tags:
+        - Assets
+      summary: Update an asset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asset'
+      responses:
+        '200':
+          description: The updated asset.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteAsset
+      tags:
+        - Assets
+      summary: Delete an asset
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Job/getall:
+    post:
+      operationId: searchJobs
+      tags:
+        - Jobs
+      summary: Search jobs
+      description: Searches jobs by conditions such as keyword, status, dates, and tags.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching jobs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /Job:
+    get:
+      operationId: getJobByUniqueId
+      tags:
+        - Jobs
+      summary: Retrieve a job by unique ID
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IncludeAdditionalDetails'
+      responses:
+        '200':
+          description: The requested job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createJob
+      tags:
+        - Jobs
+      summary: Create a job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '200':
+          description: The created job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updateJob
+      tags:
+        - Jobs
+      summary: Update a job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '200':
+          description: The updated job.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteJob
+      tags:
+        - Jobs
+      summary: Delete a job
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Job/GetById:
+    get:
+      operationId: getJobById
+      tags:
+        - Jobs
+      summary: Get job details by integer ID
+      parameters:
+        - $ref: '#/components/parameters/IntId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: The requested job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Job/updatestatus:
+    put:
+      operationId: updateJobStatus
+      tags:
+        - Jobs
+      summary: Update job status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetStatusRequest'
+      responses:
+        '200':
+          description: Job status updated.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /JobCost:
+    get:
+      operationId: getJobCosts
+      tags:
+        - Jobs
+      summary: Get all costs for a job
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - name: jobId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The job's costs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobCost'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /JobCost/Labour:
+    post:
+      operationId: createLabourCost
+      tags:
+        - Jobs
+      summary: Add a labour cost to a job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCost'
+      responses:
+        '200':
+          description: The created labour cost.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /JobCost/Material:
+    post:
+      operationId: createMaterialCost
+      tags:
+        - Jobs
+      summary: Add a material cost to a job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCost'
+      responses:
+        '200':
+          description: The created material cost.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Visit/GetAll:
+    post:
+      operationId: searchVisits
+      tags:
+        - Visits
+      summary: Retrieve all visits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching visits.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Visit:
+    post:
+      operationId: createVisit
+      tags:
+        - Visits
+      summary: Create a visit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Visit'
+      responses:
+        '200':
+          description: The created visit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visit'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateVisit
+      tags:
+        - Visits
+      summary: Update a visit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Visit'
+      responses:
+        '200':
+          description: The updated visit.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteVisit
+      tags:
+        - Visits
+      summary: Delete a visit
+      parameters:
+        - $ref: '#/components/parameters/UniqueId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Visit/GetById:
+    get:
+      operationId: getVisitById
+      tags:
+        - Visits
+      summary: Retrieve a visit by integer ID
+      parameters:
+        - $ref: '#/components/parameters/IntId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: The requested visit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visit'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Visit/Deploy:
+    post:
+      operationId: deployVisit
+      tags:
+        - Visits
+      summary: Deploy a visit to an engineer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Visit deployed.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Engineer/GetAll:
+    post:
+      operationId: searchEngineers
+      tags:
+        - Engineers
+      summary: Search engineers
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching engineers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineerList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Engineer/GetById:
+    get:
+      operationId: getEngineerById
+      tags:
+        - Engineers
+      summary: Retrieve an engineer by integer ID
+      parameters:
+        - $ref: '#/components/parameters/IntId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: The requested engineer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Engineer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Engineer/MarkOnCall:
+    post:
+      operationId: markEngineerOnCall
+      tags:
+        - Engineers
+      summary: Mark an engineer as on-call
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Engineer marked on-call.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Quote/GetAll:
+    post:
+      operationId: searchQuotes
+      tags:
+        - Quotes
+      summary: Search quotes
+      description: Searches quotes by keyword, tags, active status, and date.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching quotes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Quote:
+    post:
+      operationId: createQuote
+      tags:
+        - Quotes
+      summary: Create a quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+      responses:
+        '200':
+          description: The created quote.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateQuote
+      tags:
+        - Quotes
+      summary: Update a quote
+      parameters:
+        - $ref: '#/components/parameters/IntIdQuery'
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+      responses:
+        '200':
+          description: The updated quote.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteQuote
+      tags:
+        - Quotes
+      summary: Delete a quote
+      parameters:
+        - $ref: '#/components/parameters/IntIdQuery'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Quote/GetById:
+    get:
+      operationId: getQuoteById
+      tags:
+        - Quotes
+      summary: Get quote details
+      parameters:
+        - $ref: '#/components/parameters/IntIdQuery'
+        - $ref: '#/components/parameters/TenantId'
+        - name: includeLines
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: The requested quote.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Quote/Approve:
+    post:
+      operationId: approveQuote
+      tags:
+        - Quotes
+      summary: Approve a quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Quote approved.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Invoice/getall:
+    post:
+      operationId: searchInvoices
+      tags:
+        - Invoices
+      summary: Search invoices
+      description: Searches invoices by keyword and active status.
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Invoice:
+    post:
+      operationId: createInvoice
+      tags:
+        - Invoices
+      summary: Create an invoice
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          description: The created invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updateInvoice
+      tags:
+        - Invoices
+      summary: Update an invoice
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IntIdQuery'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          description: The updated invoice.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteInvoice
+      tags:
+        - Invoices
+      summary: Delete an invoice
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/IntIdQuery'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Invoice/GetById:
+    get:
+      operationId: getInvoiceById
+      tags:
+        - Invoices
+      summary: Retrieve an invoice by integer ID
+      parameters:
+        - $ref: '#/components/parameters/IntId'
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: The requested invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: >-
+        OAuth2 client-credentials grant against the Joblogic IdentityServer.
+        The confirmed UAT token endpoint is
+        https://uatidentityserver.joblogic.com/connect/token; the production
+        IdentityServer token endpoint is provided to callers during onboarding.
+        Send client_id, client_secret, grant_type=client_credentials, and the
+        issued scope, then pass the returned access token as
+        `Authorization: Bearer <access_token>`. Tokens expire after one hour.
+      flows:
+        clientCredentials:
+          tokenUrl: https://uatidentityserver.joblogic.com/connect/token
+          scopes: {}
+  parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    IntIdQuery:
+      name: Id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    IncludeAdditionalDetails:
+      name: includeAdditionalDetails
+      in: query
+      required: false
+      description: When true, expands nested/related detail in the response.
+      schema:
+        type: boolean
+        default: false
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: >-
+        Rate limit exceeded. Joblogic resource servers limit callers (by
+        default up to 100 requests per minute) and respond with 429.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    SearchRequest:
+      type: object
+      description: >-
+        Common search envelope used by the /GetAll and /getall endpoints.
+        Fields shown are representative; consult the live documentation for the
+        exact filters supported per resource.
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        searchTerm:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        activeStatus:
+          type: string
+          enum:
+            - active
+            - inactive
+            - all
+        pageNumber:
+          type: integer
+          default: 1
+        pageSize:
+          type: integer
+          default: 50
+    SetStatusRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+          format: uuid
+        status:
+          type: string
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        accountReference:
+          type: string
+        telephone:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        isActive:
+          type: boolean
+    CustomerList:
+      $ref: '#/components/schemas/PagedResult'
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        entityId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        jobTitle:
+          type: string
+    Site:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        siteId:
+          type: integer
+          format: int64
+        customerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        tags:
+          type: array
+          items:
+            type: string
+        isActive:
+          type: boolean
+    SiteList:
+      $ref: '#/components/schemas/PagedResult'
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        assetId:
+          type: integer
+          format: int64
+        siteId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        assetClass:
+          type: string
+        serialNumber:
+          type: string
+        make:
+          type: string
+        model:
+          type: string
+    AssetList:
+      $ref: '#/components/schemas/PagedResult'
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        jobNumber:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        jobType:
+          type: string
+        jobCategory:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        priorityLevel:
+          type: string
+        dateLogged:
+          type: string
+          format: date-time
+        targetCompletionDate:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+    JobList:
+      $ref: '#/components/schemas/PagedResult'
+    JobCost:
+      type: object
+      description: A cost line recorded against a job (labour, material, travel, mileage, overtime, expense, subcontractor, SOR item, callout, or other).
+      properties:
+        id:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        type:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: number
+        unitCost:
+          type: number
+        total:
+          type: number
+    Visit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        visitId:
+          type: integer
+          format: int64
+        jobId:
+          type: string
+          format: uuid
+        engineerId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        startDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
+    VisitList:
+      $ref: '#/components/schemas/PagedResult'
+    Engineer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        engineerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        isActive:
+          type: boolean
+    EngineerList:
+      $ref: '#/components/schemas/PagedResult'
+    Quote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        quoteId:
+          type: integer
+          format: int64
+        quoteNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        total:
+          type: number
+        tags:
+          type: array
+          items:
+            type: string
+    QuoteList:
+      $ref: '#/components/schemas/PagedResult'
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        invoiceId:
+          type: integer
+          format: int64
+        invoiceNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        netTotal:
+          type: number
+        taxTotal:
+          type: number
+        grossTotal:
+          type: number
+        issueDate:
+          type: string
+          format: date-time
+    InvoiceList:
+      $ref: '#/components/schemas/PagedResult'
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        county:
+          type: string
+        postcode:
+          type: string
+        country:
+          type: string
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer

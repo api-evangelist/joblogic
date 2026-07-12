@@ -1,0 +1,38 @@
+generated: '2026-07-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: joblogic.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 16 08:00:14 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.joblogic.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 15 13:24:22 2026 GMT
+  hsts: false
+  http_status: 403
+  note: Production API host resolves and serves TLS but returns 403 - access is firewall / IP-allowlisted per Joblogic's customer-provisioned access model.
+- host: uatapi.joblogic.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 31 06:52:13 2026 GMT
+  hsts: false
+  http_status: 403
+  note: UAT sandbox API host; also IP-allowlisted.
+- host: apidocs.joblogic.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 25 14:47:18 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  note: Public API documentation (Postman-hosted).
+domains:
+- domain: joblogic.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

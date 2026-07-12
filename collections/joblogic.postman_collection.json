@@ -1,0 +1,504 @@
+{
+  "info": {
+    "name": "Joblogic API",
+    "description": "REST interface to the Joblogic cloud field service management (FSM) platform - customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices. All resource paths sit under /api/v1. Access is customer-provisioned and IP-allowlisted: Joblogic issues a Client ID, Client Secret, and Tenant ID, and callers authenticate via OAuth2 client-credentials against a Joblogic IdentityServer (POST client_id, client_secret, grant_type=client_credentials, scope to /connect/token) to obtain a one-hour Bearer access token. Base URL: https://api.joblogic.com/api/v1 (production, firewall/IP-allowlisted) or https://uatapi.joblogic.com/api/v1 (UAT). Paths and methods are confirmed from Joblogic's published Postman documentation; request bodies are representative and modeled by API Evangelist.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{access_token}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.joblogic.com/api/v1", "type": "string" },
+    { "key": "tokenUrl", "value": "https://uatidentityserver.joblogic.com/connect/token", "type": "string" },
+    { "key": "access_token", "value": "", "type": "string" },
+    { "key": "tenantId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get access token (client credentials)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "client_id", "value": "{{client_id}}", "type": "text" },
+                { "key": "client_secret", "value": "{{client_secret}}", "type": "text" },
+                { "key": "grant_type", "value": "client_credentials", "type": "text" },
+                { "key": "scope", "value": "{{scope}}", "type": "text" }
+              ]
+            },
+            "url": { "raw": "{{tokenUrl}}", "host": ["{{tokenUrl}}"] },
+            "description": "Exchanges the Joblogic-issued client_id and client_secret for a Bearer access token (valid one hour) via the IdentityServer client-credentials grant."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Search customers",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tenantId\": \"{{tenantId}}\",\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Customer/GetAll", "host": ["{{baseUrl}}"], "path": ["Customer", "GetAll"] },
+            "description": "Searches customers by keyword, tags, and active status."
+          }
+        },
+        {
+          "name": "Get customer by unique id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Customer?id=&tenantId={{tenantId}}&includeAdditionalDetails=false", "host": ["{{baseUrl}}"], "path": ["Customer"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }, { "key": "includeAdditionalDetails", "value": "false" }] },
+            "description": "Retrieves a customer by its unique GUID."
+          }
+        },
+        {
+          "name": "Get customer by integer id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Customer/GetById?id=1&tenantId={{tenantId}}&includeAdditionalDetails=false", "host": ["{{baseUrl}}"], "path": ["Customer", "GetById"], "query": [{ "key": "id", "value": "1" }, { "key": "tenantId", "value": "{{tenantId}}" }, { "key": "includeAdditionalDetails", "value": "false" }] },
+            "description": "Retrieves a customer by its integer ID."
+          }
+        },
+        {
+          "name": "Create customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme Facilities Ltd\",\n  \"email\": \"ops@acme.example\",\n  \"telephone\": \"01234 567890\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Customer", "host": ["{{baseUrl}}"], "path": ["Customer"] },
+            "description": "Creates a customer."
+          }
+        },
+        {
+          "name": "Update customer",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Customer", "host": ["{{baseUrl}}"], "path": ["Customer"] },
+            "description": "Updates a customer."
+          }
+        },
+        {
+          "name": "Delete customer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Customer?id=&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Customer"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Deletes a customer by unique ID."
+          }
+        },
+        {
+          "name": "Set customer status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id\": \"\",\n  \"tenantId\": \"{{tenantId}}\",\n  \"status\": \"active\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Customer/SetStatus", "host": ["{{baseUrl}}"], "path": ["Customer", "SetStatus"] },
+            "description": "Activates or deactivates a customer."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "Create contact",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"entityId\": \"\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"email\": \"jane@acme.example\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Contact", "host": ["{{baseUrl}}"], "path": ["Contact"] },
+            "description": "Creates a contact attached to a parent entity."
+          }
+        },
+        {
+          "name": "Get contacts by entity id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Contact/GetContactByEntityId?tenantId={{tenantId}}&entityId=", "host": ["{{baseUrl}}"], "path": ["Contact", "GetContactByEntityId"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }, { "key": "entityId", "value": "" }] },
+            "description": "Lists contacts attached to a parent entity (customer, site, supplier, or subcontractor)."
+          }
+        },
+        {
+          "name": "Delete contact",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Contact?id=&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Contact"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Deletes a contact."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sites",
+      "item": [
+        {
+          "name": "Search sites",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tenantId\": \"{{tenantId}}\",\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Site/GetAll", "host": ["{{baseUrl}}"], "path": ["Site", "GetAll"] },
+            "description": "Searches sites by keyword, tags, customer, and active status."
+          }
+        },
+        {
+          "name": "Get site by unique id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Site?id=&tenantId={{tenantId}}&includeAdditionalDetails=false", "host": ["{{baseUrl}}"], "path": ["Site"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }, { "key": "includeAdditionalDetails", "value": "false" }] },
+            "description": "Retrieves a site by its unique GUID."
+          }
+        },
+        {
+          "name": "Create site",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme HQ\",\n  \"customerId\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Site?tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Site"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Creates a site under a customer."
+          }
+        },
+        {
+          "name": "Update site",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Site?id=&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Site"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Updates a site."
+          }
+        },
+        {
+          "name": "Delete site",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Site?id=&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Site"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Deletes a site."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assets",
+      "item": [
+        {
+          "name": "Search assets",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tenantId\": \"{{tenantId}}\",\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Asset/GetAll", "host": ["{{baseUrl}}"], "path": ["Asset", "GetAll"] },
+            "description": "Searches assets."
+          }
+        },
+        {
+          "name": "Get asset by unique id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Asset?id=&tenantId={{tenantId}}&includeAdditionalDetails=true", "host": ["{{baseUrl}}"], "path": ["Asset"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }, { "key": "includeAdditionalDetails", "value": "true" }] },
+            "description": "Retrieves an asset by its unique GUID."
+          }
+        },
+        {
+          "name": "Create asset",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Boiler 1\",\n  \"siteId\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Asset?tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Asset"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Creates an asset at a site."
+          }
+        },
+        {
+          "name": "Update asset",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Asset", "host": ["{{baseUrl}}"], "path": ["Asset"] },
+            "description": "Updates an asset."
+          }
+        },
+        {
+          "name": "Delete asset",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Asset?id=&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Asset"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Deletes an asset."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Search jobs",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tenantId\": \"{{tenantId}}\",\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Job/getall", "host": ["{{baseUrl}}"], "path": ["Job", "getall"] },
+            "description": "Searches jobs by conditions such as keyword, status, dates, and tags."
+          }
+        },
+        {
+          "name": "Retrieve job by unique id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Job?id=&tenantId={{tenantId}}&includeAdditionalDetails=true", "host": ["{{baseUrl}}"], "path": ["Job"], "query": [{ "key": "id", "value": "" }, { "key": "tenantId", "value": "{{tenantId}}" }, { "key": "includeAdditionalDetails", "value": "true" }] },
+            "description": "Retrieves a job by its unique GUID."
+          }
+        },
+        {
+          "name": "Create job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Fix boiler\",\n  \"customerId\": \"\",\n  \"siteId\": \"\",\n  \"jobType\": \"Service\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Job", "host": ["{{baseUrl}}"], "path": ["Job"] },
+            "description": "Creates a job."
+          }
+        },
+        {
+          "name": "Update job",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Job", "host": ["{{baseUrl}}"], "path": ["Job"] },
+            "description": "Updates a job."
+          }
+        },
+        {
+          "name": "Update job status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id\": \"\",\n  \"tenantId\": \"{{tenantId}}\",\n  \"status\": \"Completed\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Job/updatestatus", "host": ["{{baseUrl}}"], "path": ["Job", "updatestatus"] },
+            "description": "Updates the status of a job."
+          }
+        },
+        {
+          "name": "Get job costs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/JobCost?tenantId={{tenantId}}&jobId=", "host": ["{{baseUrl}}"], "path": ["JobCost"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }, { "key": "jobId", "value": "" }] },
+            "description": "Gets all cost lines recorded against a job."
+          }
+        },
+        {
+          "name": "Add labour cost",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"jobId\": \"\",\n  \"description\": \"On-site labour\",\n  \"quantity\": 2,\n  \"unitCost\": 45\n}" },
+            "url": { "raw": "{{baseUrl}}/JobCost/Labour", "host": ["{{baseUrl}}"], "path": ["JobCost", "Labour"] },
+            "description": "Adds a labour cost line to a job."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Visits",
+      "item": [
+        {
+          "name": "Search visits",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tenantId\": \"{{tenantId}}\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Visit/GetAll", "host": ["{{baseUrl}}"], "path": ["Visit", "GetAll"] },
+            "description": "Retrieves all visits."
+          }
+        },
+        {
+          "name": "Get visit by integer id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Visit/GetById?id=1&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Visit", "GetById"], "query": [{ "key": "id", "value": "1" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Retrieves a visit by its integer ID."
+          }
+        },
+        {
+          "name": "Create visit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"jobId\": \"\",\n  \"engineerId\": \"\",\n  \"startDateTime\": \"2026-07-13T09:00:00Z\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Visit", "host": ["{{baseUrl}}"], "path": ["Visit"] },
+            "description": "Creates a visit against a job."
+          }
+        },
+        {
+          "name": "Deploy visit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Visit/Deploy", "host": ["{{baseUrl}}"], "path": ["Visit", "Deploy"] },
+            "description": "Deploys a visit to a mobile engineer."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Engineers",
+      "item": [
+        {
+          "name": "Search engineers",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Engineer/GetAll?tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Engineer", "GetAll"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Searches engineers by keyword and active status."
+          }
+        },
+        {
+          "name": "Get engineer by integer id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Engineer/GetById?id=1&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Engineer", "GetById"], "query": [{ "key": "id", "value": "1" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Retrieves an engineer by integer ID."
+          }
+        },
+        {
+          "name": "Mark engineer on-call",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Engineer/MarkOnCall", "host": ["{{baseUrl}}"], "path": ["Engineer", "MarkOnCall"] },
+            "description": "Marks an engineer as on-call."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quotes",
+      "item": [
+        {
+          "name": "Search quotes",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tenantId\": \"{{tenantId}}\",\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Quote/GetAll", "host": ["{{baseUrl}}"], "path": ["Quote", "GetAll"] },
+            "description": "Searches quotes by keyword, tags, active status, and date."
+          }
+        },
+        {
+          "name": "Create quote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerId\": \"\",\n  \"siteId\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Quote", "host": ["{{baseUrl}}"], "path": ["Quote"] },
+            "description": "Creates a quote."
+          }
+        },
+        {
+          "name": "Get quote by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Quote/GetById?Id=1&TenantId={{tenantId}}&includeLines=false", "host": ["{{baseUrl}}"], "path": ["Quote", "GetById"], "query": [{ "key": "Id", "value": "1" }, { "key": "TenantId", "value": "{{tenantId}}" }, { "key": "includeLines", "value": "false" }] },
+            "description": "Gets quote details."
+          }
+        },
+        {
+          "name": "Approve quote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Quote/Approve", "host": ["{{baseUrl}}"], "path": ["Quote", "Approve"] },
+            "description": "Approves a quote."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "Search invoices",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/Invoice/getall?tenantid={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Invoice", "getall"], "query": [{ "key": "tenantid", "value": "{{tenantId}}" }] },
+            "description": "Searches invoices by keyword and active status."
+          }
+        },
+        {
+          "name": "Create invoice",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerId\": \"\",\n  \"jobId\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/Invoice?tenantid={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Invoice"], "query": [{ "key": "tenantid", "value": "{{tenantId}}" }] },
+            "description": "Creates an invoice."
+          }
+        },
+        {
+          "name": "Retrieve invoice by integer id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Invoice/GetById?id=1&tenantId={{tenantId}}", "host": ["{{baseUrl}}"], "path": ["Invoice", "GetById"], "query": [{ "key": "id", "value": "1" }, { "key": "tenantId", "value": "{{tenantId}}" }] },
+            "description": "Retrieves an invoice by its integer ID."
+          }
+        },
+        {
+          "name": "Update invoice",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/Invoice?tenantId={{tenantId}}&id=1", "host": ["{{baseUrl}}"], "path": ["Invoice"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }, { "key": "id", "value": "1" }] },
+            "description": "Updates an invoice."
+          }
+        },
+        {
+          "name": "Delete invoice",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/Invoice?tenantId={{tenantId}}&id=1", "host": ["{{baseUrl}}"], "path": ["Invoice"], "query": [{ "key": "tenantId", "value": "{{tenantId}}" }, { "key": "id", "value": "1" }] },
+            "description": "Deletes an invoice."
+          }
+        }
+      ]
+    }
+  ]
+}

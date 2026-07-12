@@ -1,0 +1,243 @@
+aid: joblogic
+url: https://raw.githubusercontent.com/api-evangelist/joblogic/refs/heads/main/apis.yml
+name: Joblogic
+kind: company
+description: Joblogic is a cloud field service management (FSM) platform for
+  trades, service, and maintenance contractors - covering customers, sites,
+  assets, jobs, engineer scheduling, mobile workforce, quotes, invoices, stock,
+  and PPM (planned preventative maintenance) contracts. Joblogic exposes a
+  REST API (base path /api/v1) secured with OAuth2 client-credentials tokens
+  issued by a Joblogic IdentityServer, plus outbound webhooks for change
+  events. API access is customer-provisioned - Joblogic issues a Client ID,
+  Client Secret, and Tenant ID and IP-allowlists callers behind a firewall,
+  with a UAT sandbox for integration development.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Field Service Management
+- Job Management
+- Scheduling
+- Maintenance
+- Workforce
+- Mobile Workforce
+- Trades
+- CRM
+- SaaS
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: joblogic:joblogic-customers-api
+  name: Joblogic Customers API
+  tags:
+  - Customers
+  - CRM
+  - Field Service Management
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: https://apidocs.joblogic.com/
+    type: APIReference
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Search, retrieve, create, update, delete, and set the status of
+    customer records - the account entities that own sites, jobs, quotes, and
+    invoices in Joblogic. Includes customer attribute (custom field) management.
+- aid: joblogic:joblogic-contacts-api
+  name: Joblogic Contacts API
+  tags:
+  - Contacts
+  - CRM
+  - Notifications
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Manage contacts attached to customers, sites, suppliers, and
+    subcontractors - create, update, delete, look up contacts by parent entity,
+    and configure the events a contact is notified about.
+- aid: joblogic:joblogic-sites-api
+  name: Joblogic Sites API
+  tags:
+  - Sites
+  - Locations
+  - Maintenance
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Manage sites - the physical service locations belonging to a
+    customer where assets live and work is carried out. Search, retrieve,
+    create, update, delete, set status, and configure site warnings, plus site
+    attribute management.
+- aid: joblogic:joblogic-assets-api
+  name: Joblogic Assets API
+  tags:
+  - Assets
+  - Equipment
+  - Maintenance
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Manage the equipment and plant assets located at customer sites
+    that Joblogic services and maintains - search, retrieve by integer or unique
+    ID, create, update, and delete assets, with asset attribute (custom field)
+    support.
+- aid: joblogic:joblogic-jobs-api
+  name: Joblogic Jobs API
+  tags:
+  - Jobs
+  - Work Orders
+  - Job Costs
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: The core work-order surface - create, retrieve, search, update,
+    delete, approve, and change the status of jobs, assign contacts, generate
+    job sheets, and record job costs (labour, materials, travel, mileage,
+    overtime, expenses, subcontractor, and schedule-of-rate items).
+- aid: joblogic:joblogic-visits-api
+  name: Joblogic Visits API
+  tags:
+  - Visits
+  - Scheduling
+  - Mobile Workforce
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Schedule and manage engineer visits against jobs - search,
+    retrieve, create, update, delete, deploy / re-deploy to a mobile engineer,
+    cancel, and search the scheduler planner.
+- aid: joblogic:joblogic-engineers-api
+  name: Joblogic Engineers API
+  tags:
+  - Engineers
+  - Scheduling
+  - Workforce
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Search and retrieve field engineers, update certificate
+    registration numbers, mark engineers on-call, and run scheduler searches to
+    place visits against the mobile workforce.
+- aid: joblogic:joblogic-quotes-api
+  name: Joblogic Quotes API
+  tags:
+  - Quotes
+  - Estimates
+  - Sales
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Create, search, retrieve, update, and delete quotes, read quote
+    costs, assign contacts, approve / reject / revert / cancel a quote, and
+    generate a quote document, with quote attribute (custom field) support.
+- aid: joblogic:joblogic-invoices-api
+  name: Joblogic Invoices API
+  tags:
+  - Invoices
+  - Billing
+  - Finance
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://apidocs.joblogic.com/
+  baseURL: https://api.joblogic.com/api/v1
+  properties:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+  - url: openapi/joblogic-openapi.yml
+    type: OpenAPI
+  - url: collections/joblogic.postman_collection.json
+    type: PostmanCollection
+  - url: collections/joblogic.opencollection.json
+    type: OpenCollection
+  description: Create, search, retrieve, update, and delete invoices - including
+    standard, customer-grouped, and PPM invoices - and generate invoice
+    documents. Syncs with accounting integrations such as Xero, QuickBooks, and
+    Sage.
+common:
+- type: DomainSecurity
+  url: security/joblogic-domain-security.yml
+- type: Authentication
+  url: authentication/joblogic-authentication.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/job-logic
+- type: Website
+  url: https://www.joblogic.com
+- type: Documentation
+  url: https://apidocs.joblogic.com/
+- type: Plans
+  url: plans/joblogic-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/joblogic-rate-limits.yml
+- type: FinOps
+  url: finops/joblogic-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

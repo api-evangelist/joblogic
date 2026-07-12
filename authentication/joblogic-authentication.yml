@@ -1,0 +1,28 @@
+generated: '2026-07-12'
+method: derived
+source: openapi/joblogic-openapi.yml
+summary:
+  types:
+  - oauth2
+schemes:
+- name: oauth2ClientCredentials
+  type: oauth2
+  flow: clientCredentials
+  tokenUrl: https://uatidentityserver.joblogic.com/connect/token
+  grantType: client_credentials
+  description: >-
+    OAuth2 client-credentials grant against the Joblogic IdentityServer. A
+    caller POSTs client_id, client_secret, grant_type=client_credentials, and
+    the issued scope (as application/x-www-form-urlencoded) to the token
+    endpoint, then passes the returned access token as `Authorization: Bearer
+    <access_token>` on every API request. Access tokens expire after one hour;
+    expired or missing tokens return 401 Unauthorized. The confirmed UAT token
+    endpoint is https://uatidentityserver.joblogic.com/connect/token; the
+    production IdentityServer token endpoint, the Client ID, Client Secret,
+    Tenant ID, and scope are all provisioned to the caller by Joblogic during
+    onboarding, and the caller's public IP addresses must be allowlisted behind
+    Joblogic's firewall before access is granted.
+  sources:
+  - openapi/joblogic-openapi.yml
+  - https://apidocs.joblogic.com/
+  - https://support.joblogic.com/docs/api-access

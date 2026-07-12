@@ -1,0 +1,93 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Joblogic
+providerId: joblogic
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Field Service Management
+- SaaS
+- Per User
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Joblogic spend. Joblogic is a per-user, per-month SaaS
+  subscription for field service management, typically billed annually and
+  tiered by feature set. The dominant cost driver is the number of licensed
+  users (back-office and mobile engineers) multiplied by the tier rate, plus
+  one-off implementation / onboarding and optional custom integration
+  development fees (Joblogic takes a 50% deposit before custom integration work
+  starts). The REST API and webhooks are not separately metered with public
+  per-call pricing - API access is provisioned to existing subscribers rather
+  than billed by usage - so cost management centers on right-sizing user
+  licenses and tier selection rather than on API call volume.
+notes: >-
+  Per-user tier rates are quote-based and not publicly reconciled; verify with
+  Joblogic sales. Because billing is per user rather than per API call, the
+  100-requests-per-minute API rate limit is an operational constraint, not a
+  billing meter.
+sources:
+- https://www.joblogic.com/pricing/
+- https://support.joblogic.com/docs/api-access
+- https://apidocs.joblogic.com/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Joblogic
+serviceCategory: Field Service Management Software
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Annual
+  billingCurrency: GBP
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Joblogic
+  ServiceCategory: Field Service Management Software
+  ProviderName: Joblogic
+  PublisherName: Joblogic
+  InvoiceIssuerName: Joblogic
+  BillingCurrency: GBP
+  ChargeCategory: Purchase
+  PricingCategory: Subscription
+meters:
+- name: user_licenses
+  description: Number of licensed Joblogic users (back-office and mobile engineers), billed per user per month.
+  unit: users
+  aggregation: max
+  dimensions:
+  - account
+  - tier
+- name: implementation
+  description: One-off implementation / onboarding services.
+  unit: engagements
+  aggregation: sum
+  dimensions:
+  - account
+- name: custom_integration
+  description: Optional bespoke integration development (50% deposit taken up front).
+  unit: engagements
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track licensed user counts by tier and department; reconcile active users against invoiced seats each term.
+- name: Allocation
+  description: Map user licenses to teams / cost centers; attribute implementation and integration fees to the sponsoring project.
+- name: Optimization
+  description: Right-size the number of seats and the feature tier to actual usage; deactivate unused users; consolidate integrations to avoid repeated bespoke development fees.
+- name: Accountability
+  description: Assign an owner for the Joblogic subscription; review seat counts and tier fit against the annual renewal.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

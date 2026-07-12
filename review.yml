@@ -1,0 +1,157 @@
+aid: joblogic
+name: Joblogic
+review:
+  question: Does Joblogic expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Joblogic's documented public interface
+    is a request/response REST API (all paths under /api/v1) plus outbound
+    webhooks. Webhooks are server-to-client HTTP POST callbacks - Joblogic
+    POSTs a JSON payload to a URL the customer configures when a subscribed
+    event (job/visit/invoice/quote/site/asset created, updated, deleted, or
+    status-changed, and many more) fires. That is one-way HTTP delivery, not a
+    persistent bidirectional WebSocket (ws:// or wss://) transport on
+    Joblogic's own API, so there is no server-push socket surface to model in
+    AsyncAPI. The webhook catalog is documented as payload schemas, not as
+    programmatic subscription endpoints in the public collection.
+findings:
+  summary: |
+    Joblogic does not publish a documented public WebSocket API. Joblogic is a
+    cloud field service management (FSM) platform. Its public API is a REST API
+    with all resource paths under /api/v1 (Customer, Contact, Site, Asset, Job,
+    JobCost, Visit, Engineer, Quote, Invoice, and many supporting resources),
+    documented via a Postman collection at https://apidocs.joblogic.com/.
+    Authentication is OAuth2 client-credentials against a Joblogic
+    IdentityServer (POST client_id, client_secret, grant_type=client_credentials,
+    scope to /connect/token), returning a Bearer access token that expires after
+    one hour. Most calls require a tenantId (GUID) query parameter. Change
+    notifications are delivered by outbound webhooks (HTTP POST callbacks), not
+    by a WebSocket. No realtime, bidirectional, or streaming WebSocket (ws:// or
+    wss://) endpoint is documented anywhere in Joblogic's API.
+  accessModel: |
+    API access is customer-provisioned and gated. Joblogic issues a Client ID,
+    Client Secret, and Tenant ID and IP-allowlists the caller's public IP
+    addresses behind its firewall before requests are accepted. Integrations
+    are developed against a per-customer UAT sandbox (web app
+    https://uat.joblogic.com, API host https://uatapi.joblogic.com, token host
+    https://uatidentityserver.joblogic.com) and then promoted to production. A
+    self-service "API Access" app can issue credentials, and Joblogic also
+    offers paid integration development services. Because the resource servers
+    are IP-allowlisted, live request/response bodies could not be exercised
+    directly for this review.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.joblogic.com/api/v1
+      documented: true
+      note: All resource paths under /api/v1. Production host is firewall/IP-allowlisted; UAT host is https://uatapi.joblogic.com/api/v1.
+    - protocol: OAuth2 Token
+      scheme: https
+      documented: true
+      note: IdentityServer client-credentials token endpoint. Confirmed UAT endpoint https://uatidentityserver.joblogic.com/connect/token; production endpoint provisioned during onboarding.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Outbound HTTP POST callbacks for subscribed events (job, visit, invoice, quote, site, asset, and many more). Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Joblogic's API or webhook reference as of the review date.
+  endpointsConfirmed:
+    note: |
+      Paths and HTTP methods below are confirmed from Joblogic's published
+      Postman collection (apidocs.joblogic.com). Base is the /api/v1 host;
+      most also take a tenantId query parameter. This is a representative
+      subset of a large API (60+ resource groups, 500+ requests).
+    rest:
+      - POST   /api/v1/Customer/GetAll
+      - GET    /api/v1/Customer
+      - GET    /api/v1/Customer/GetById
+      - POST   /api/v1/Customer
+      - PUT    /api/v1/Customer
+      - DELETE /api/v1/Customer
+      - PUT    /api/v1/Customer/SetStatus
+      - POST   /api/v1/Contact
+      - PUT    /api/v1/Contact
+      - DELETE /api/v1/Contact
+      - GET    /api/v1/Contact/GetContactByEntityId
+      - POST   /api/v1/Site/GetAll
+      - GET    /api/v1/Site
+      - GET    /api/v1/Site/GetById
+      - POST   /api/v1/Site
+      - PUT    /api/v1/Site
+      - DELETE /api/v1/Site
+      - POST   /api/v1/Asset/GetAll
+      - GET    /api/v1/Asset
+      - GET    /api/v1/Asset/GetById
+      - POST   /api/v1/Asset
+      - PUT    /api/v1/Asset
+      - DELETE /api/v1/Asset
+      - POST   /api/v1/Job/getall
+      - GET    /api/v1/Job
+      - GET    /api/v1/Job/GetById
+      - POST   /api/v1/Job
+      - PUT    /api/v1/Job
+      - DELETE /api/v1/Job
+      - PUT    /api/v1/Job/updatestatus
+      - GET    /api/v1/JobCost
+      - POST   /api/v1/JobCost/Labour
+      - POST   /api/v1/JobCost/Material
+      - POST   /api/v1/Visit/GetAll
+      - GET    /api/v1/Visit/GetById
+      - POST   /api/v1/Visit
+      - PUT    /api/v1/Visit
+      - DELETE /api/v1/Visit
+      - POST   /api/v1/Visit/Deploy
+      - POST   /api/v1/Engineer/GetAll
+      - GET    /api/v1/Engineer/GetById
+      - POST   /api/v1/Engineer/MarkOnCall
+      - POST   /api/v1/Quote/GetAll
+      - POST   /api/v1/Quote
+      - GET    /api/v1/Quote/GetById
+      - PUT    /api/v1/Quote
+      - DELETE /api/v1/Quote
+      - POST   /api/v1/Quote/Approve
+      - POST   /api/v1/Invoice/getall
+      - POST   /api/v1/Invoice
+      - GET    /api/v1/Invoice/GetById
+      - PUT    /api/v1/Invoice
+      - DELETE /api/v1/Invoice
+    tokenEndpoint:
+      - POST   https://uatidentityserver.joblogic.com/connect/token
+  endpointsModeled:
+    note: |
+      Request/response bodies in the OpenAPI and collections are modeled by API
+      Evangelist. Paths and methods are grounded in the live Postman
+      collection, but payload schemas (field names/types) are representative
+      because the IP-allowlisted API could not be called directly. The webhook
+      Job payload shape is grounded in an example from Joblogic's documentation.
+sources:
+  - url: https://apidocs.joblogic.com/
+    type: Documentation
+    note: Official Joblogic Developer Platform (Postman-hosted). Confirms REST /api/v1 paths, OAuth2 client-credentials auth, tenantId, 100 req/min rate limit, 429, and the webhook event catalog.
+  - url: https://support.joblogic.com/docs/api-access
+    type: Documentation
+    note: API access process - IP allowlisting, UAT provisioning, Client ID / Secret / Tenant ID, one-hour token expiry.
+  - url: https://www.joblogic.com/marketplace/api-access
+    type: Documentation
+    note: Self-service API Access app for requesting credentials.
+  - url: https://www.joblogic.com/pricing/
+    type: Pricing
+    note: Per-user subscription pricing (demo/quote-based; no fixed public list).
+  - url: https://www.linkedin.com/company/job-logic
+    type: LinkedIn
+    note: Company profile - UK field service management software, founded 1998.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Joblogic's own public API is
+    request/response REST (/api/v1) with OAuth2 client-credentials auth, plus
+    outbound webhook HTTP callbacks for change events. No AsyncAPI document was
+    created because there is no server-push socket transport on Joblogic's own
+    API to model; webhooks are one-way HTTP POST delivery documented as payload
+    schemas, not a bidirectional WebSocket.

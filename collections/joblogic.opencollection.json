@@ -1,0 +1,427 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Joblogic API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{access_token}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Authentication", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get access token (client credentials).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://uatidentityserver.joblogic.com/connect/token",
+            "auth": { "type": "none" },
+            "body": { "type": "urlencoded", "data": "client_id={{client_id}}&client_secret={{client_secret}}&grant_type=client_credentials&scope={{scope}}" }
+          },
+          "docs": "Exchanges the Joblogic-issued client_id and client_secret for a one-hour Bearer access token via the IdentityServer client-credentials grant. The production IdentityServer token endpoint is provided during onboarding."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search customers.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Customer/GetAll", "body": { "type": "json", "data": "{\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" } },
+          "docs": "Searches customers by keyword, tags, and active status."
+        },
+        {
+          "info": { "name": "Get customer by unique id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Customer?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Customer unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves a customer by its unique GUID."
+        },
+        {
+          "info": { "name": "Create customer.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Customer", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a customer."
+        },
+        {
+          "info": { "name": "Update customer.", "type": "http" },
+          "http": { "method": "PUT", "url": "https://api.joblogic.com/api/v1/Customer", "body": { "type": "json", "data": "{}" } },
+          "docs": "Updates a customer."
+        },
+        {
+          "info": { "name": "Delete customer.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Customer?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Customer unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Deletes a customer by unique ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Contacts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create contact.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Contact", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a contact attached to a parent entity."
+        },
+        {
+          "info": { "name": "Get contacts by entity id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Contact/GetContactByEntityId?tenantId=:tenantId&entityId=:entityId",
+            "params": [
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." },
+              { "name": "entityId", "value": "", "type": "query", "description": "Parent entity unique GUID." }
+            ]
+          },
+          "docs": "Lists contacts attached to a parent entity (customer, site, supplier, or subcontractor)."
+        },
+        {
+          "info": { "name": "Delete contact.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Contact?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Contact unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Deletes a contact."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Sites", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search sites.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Site/GetAll", "body": { "type": "json", "data": "{\n  \"searchTerm\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}" } },
+          "docs": "Searches sites by keyword, tags, customer, and active status."
+        },
+        {
+          "info": { "name": "Get site by unique id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Site?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Site unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves a site by its unique GUID."
+        },
+        {
+          "info": { "name": "Create site.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Site?tenantId=:tenantId",
+            "params": [ { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." } ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Creates a site under a customer."
+        },
+        {
+          "info": { "name": "Update site.", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Site?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Site unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Updates a site."
+        },
+        {
+          "info": { "name": "Delete site.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Site?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Site unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Deletes a site."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Assets", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search assets.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Asset/GetAll", "body": { "type": "json", "data": "{}" } },
+          "docs": "Searches assets."
+        },
+        {
+          "info": { "name": "Get asset by unique id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Asset?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Asset unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves an asset by its unique GUID."
+        },
+        {
+          "info": { "name": "Create asset.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Asset?tenantId=:tenantId",
+            "params": [ { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." } ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Creates an asset at a site."
+        },
+        {
+          "info": { "name": "Update asset.", "type": "http" },
+          "http": { "method": "PUT", "url": "https://api.joblogic.com/api/v1/Asset", "body": { "type": "json", "data": "{}" } },
+          "docs": "Updates an asset."
+        },
+        {
+          "info": { "name": "Delete asset.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Asset?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Asset unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Deletes an asset."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Jobs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search jobs.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Job/getall", "body": { "type": "json", "data": "{}" } },
+          "docs": "Searches jobs by conditions such as keyword, status, dates, and tags."
+        },
+        {
+          "info": { "name": "Retrieve job by unique id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Job?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Job unique GUID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves a job by its unique GUID."
+        },
+        {
+          "info": { "name": "Create job.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Job", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a job."
+        },
+        {
+          "info": { "name": "Update job.", "type": "http" },
+          "http": { "method": "PUT", "url": "https://api.joblogic.com/api/v1/Job", "body": { "type": "json", "data": "{}" } },
+          "docs": "Updates a job."
+        },
+        {
+          "info": { "name": "Update job status.", "type": "http" },
+          "http": { "method": "PUT", "url": "https://api.joblogic.com/api/v1/Job/updatestatus", "body": { "type": "json", "data": "{}" } },
+          "docs": "Updates the status of a job."
+        },
+        {
+          "info": { "name": "Get job costs.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/JobCost?tenantId=:tenantId&jobId=:jobId",
+            "params": [
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." },
+              { "name": "jobId", "value": "", "type": "query", "description": "Job unique GUID." }
+            ]
+          },
+          "docs": "Gets all cost lines recorded against a job."
+        },
+        {
+          "info": { "name": "Add labour cost.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/JobCost/Labour", "body": { "type": "json", "data": "{}" } },
+          "docs": "Adds a labour cost line to a job."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Visits", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search visits.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Visit/GetAll", "body": { "type": "json", "data": "{}" } },
+          "docs": "Retrieves all visits."
+        },
+        {
+          "info": { "name": "Get visit by integer id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Visit/GetById?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Visit integer ID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves a visit by its integer ID."
+        },
+        {
+          "info": { "name": "Create visit.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Visit", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a visit against a job."
+        },
+        {
+          "info": { "name": "Deploy visit.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Visit/Deploy", "body": { "type": "json", "data": "{}" } },
+          "docs": "Deploys a visit to a mobile engineer."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Engineers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search engineers.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Engineer/GetAll?tenantId=:tenantId",
+            "params": [ { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." } ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Searches engineers by keyword and active status."
+        },
+        {
+          "info": { "name": "Get engineer by integer id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Engineer/GetById?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Engineer integer ID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves an engineer by integer ID."
+        },
+        {
+          "info": { "name": "Mark engineer on-call.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Engineer/MarkOnCall", "body": { "type": "json", "data": "{}" } },
+          "docs": "Marks an engineer as on-call."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Quotes", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search quotes.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Quote/GetAll", "body": { "type": "json", "data": "{}" } },
+          "docs": "Searches quotes by keyword, tags, active status, and date."
+        },
+        {
+          "info": { "name": "Create quote.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Quote", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a quote."
+        },
+        {
+          "info": { "name": "Get quote by id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Quote/GetById?Id=:Id&TenantId=:TenantId",
+            "params": [
+              { "name": "Id", "value": "", "type": "query", "description": "Quote integer ID." },
+              { "name": "TenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Gets quote details."
+        },
+        {
+          "info": { "name": "Approve quote.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.joblogic.com/api/v1/Quote/Approve", "body": { "type": "json", "data": "{}" } },
+          "docs": "Approves a quote."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Invoices", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search invoices.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Invoice/getall?tenantid=:tenantId",
+            "params": [ { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." } ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Searches invoices by keyword and active status."
+        },
+        {
+          "info": { "name": "Create invoice.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Invoice?tenantid=:tenantId",
+            "params": [ { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." } ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Creates an invoice."
+        },
+        {
+          "info": { "name": "Retrieve invoice by integer id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Invoice/GetById?id=:id&tenantId=:tenantId",
+            "params": [
+              { "name": "id", "value": "", "type": "query", "description": "Invoice integer ID." },
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." }
+            ]
+          },
+          "docs": "Retrieves an invoice by its integer ID."
+        },
+        {
+          "info": { "name": "Update invoice.", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Invoice?tenantId=:tenantId&id=:id",
+            "params": [
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." },
+              { "name": "id", "value": "", "type": "query", "description": "Invoice integer ID." }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Updates an invoice."
+        },
+        {
+          "info": { "name": "Delete invoice.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Invoice?tenantId=:tenantId&id=:id",
+            "params": [
+              { "name": "tenantId", "value": "", "type": "query", "description": "Caller tenant GUID." },
+              { "name": "id", "value": "", "type": "query", "description": "Invoice integer ID." }
+            ]
+          },
+          "docs": "Deletes an invoice."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
