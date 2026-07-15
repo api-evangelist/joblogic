@@ -222,6 +222,8 @@ apis:
     documents. Syncs with accounting integrations such as Xero, QuickBooks, and
     Sage.
 common:
+- type: AgenticAccess
+  url: agentic-access/joblogic-agentic-access.yml
 - type: DomainSecurity
   url: security/joblogic-domain-security.yml
 - type: Authentication
