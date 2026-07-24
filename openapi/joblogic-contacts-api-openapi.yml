@@ -1,0 +1,172 @@
+openapi: 3.0.3
+info:
+  title: Joblogic Assets Contacts API
+  description: 'The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors. All resource paths sit under `/api/v1`.
+
+
+    Access model: Joblogic API access is customer-provisioned and gated. A caller is issued a Client ID, Client Secret, and Tenant ID by Joblogic, and the caller''s public IP addresses are allowlisted behind Joblogic''s firewall before requests are accepted. Integrations are first developed against a per-customer UAT sandbox (web app at https://uat.joblogic.com, API host https://uatapi.joblogic.com) and then promoted to production.
+
+
+    Authentication: Each request must carry a Bearer access token obtained from the Joblogic IdentityServer token endpoint using the OAuth2 client-credentials grant (client_id, client_secret, grant_type, scope). Access tokens expire after one hour; expired or missing tokens return 401 Unauthorized.
+
+
+    Multi-tenancy: Most operations require a `tenantId` (the caller''s Joblogic tenant, a GUID) supplied as a query parameter.
+
+
+    Modeling note: This document is modeled by API Evangelist from Joblogic''s published Postman documentation at https://apidocs.joblogic.com/. Endpoint paths, methods, and the auth flow are confirmed from that collection. Request and response schemas are representative - the live API is IP-allowlisted, so payload bodies could not be exercised directly and are illustrative rather than exhaustive.'
+  version: v1
+  contact:
+    name: Joblogic Support
+    url: https://support.joblogic.com/docs/api-access
+    email: support@joblogic.com
+servers:
+- url: https://api.joblogic.com/api/v1
+  description: Production API host (live; firewall / IP-allowlisted, customer-provisioned). The exact production host is confirmed to callers during onboarding.
+- url: https://uatapi.joblogic.com/api/v1
+  description: UAT sandbox API host used for integration development.
+security:
+- oauth2ClientCredentials: []
+tags:
+- name: Contacts
+  description: Contacts attached to customers, sites, suppliers, and subcontractors.
+paths:
+  /Contact:
+    post:
+      operationId: createContact
+      tags:
+      - Contacts
+      summary: Create a contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+      responses:
+        '200':
+          description: The created contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateContact
+      tags:
+      - Contacts
+      summary: Update a contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+      responses:
+        '200':
+          description: The updated contact.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteContact
+      tags:
+      - Contacts
+      summary: Delete a contact
+      parameters:
+      - $ref: '#/components/parameters/UniqueId'
+      - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Contact/GetContactByEntityId:
+    get:
+      operationId: getContactsByEntityId
+      tags:
+      - Contacts
+      summary: Get contacts by parent entity
+      description: Lists contacts attached to a parent entity (customer, site, supplier, or subcontractor) by its unique ID.
+      parameters:
+      - $ref: '#/components/parameters/TenantId'
+      - name: entityId
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: A list of contacts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        entityId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        jobTitle:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: 'OAuth2 client-credentials grant against the Joblogic IdentityServer. The confirmed UAT token endpoint is https://uatidentityserver.joblogic.com/connect/token; the production IdentityServer token endpoint is provided to callers during onboarding. Send client_id, client_secret, grant_type=client_credentials, and the issued scope, then pass the returned access token as `Authorization: Bearer <access_token>`. Tokens expire after one hour.'
+      flows:
+        clientCredentials:
+          tokenUrl: https://uatidentityserver.joblogic.com/connect/token
+          scopes: {}

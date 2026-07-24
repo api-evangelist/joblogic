@@ -1,0 +1,258 @@
+openapi: 3.0.3
+info:
+  title: Joblogic Assets Invoices API
+  description: 'The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors. All resource paths sit under `/api/v1`.
+
+
+    Access model: Joblogic API access is customer-provisioned and gated. A caller is issued a Client ID, Client Secret, and Tenant ID by Joblogic, and the caller''s public IP addresses are allowlisted behind Joblogic''s firewall before requests are accepted. Integrations are first developed against a per-customer UAT sandbox (web app at https://uat.joblogic.com, API host https://uatapi.joblogic.com) and then promoted to production.
+
+
+    Authentication: Each request must carry a Bearer access token obtained from the Joblogic IdentityServer token endpoint using the OAuth2 client-credentials grant (client_id, client_secret, grant_type, scope). Access tokens expire after one hour; expired or missing tokens return 401 Unauthorized.
+
+
+    Multi-tenancy: Most operations require a `tenantId` (the caller''s Joblogic tenant, a GUID) supplied as a query parameter.
+
+
+    Modeling note: This document is modeled by API Evangelist from Joblogic''s published Postman documentation at https://apidocs.joblogic.com/. Endpoint paths, methods, and the auth flow are confirmed from that collection. Request and response schemas are representative - the live API is IP-allowlisted, so payload bodies could not be exercised directly and are illustrative rather than exhaustive.'
+  version: v1
+  contact:
+    name: Joblogic Support
+    url: https://support.joblogic.com/docs/api-access
+    email: support@joblogic.com
+servers:
+- url: https://api.joblogic.com/api/v1
+  description: Production API host (live; firewall / IP-allowlisted, customer-provisioned). The exact production host is confirmed to callers during onboarding.
+- url: https://uatapi.joblogic.com/api/v1
+  description: UAT sandbox API host used for integration development.
+security:
+- oauth2ClientCredentials: []
+tags:
+- name: Invoices
+  description: Standard, customer-grouped, and PPM invoices.
+paths:
+  /Invoice/getall:
+    post:
+      operationId: searchInvoices
+      tags:
+      - Invoices
+      summary: Search invoices
+      description: Searches invoices by keyword and active status.
+      parameters:
+      - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Invoice:
+    post:
+      operationId: createInvoice
+      tags:
+      - Invoices
+      summary: Create an invoice
+      parameters:
+      - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          description: The created invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updateInvoice
+      tags:
+      - Invoices
+      summary: Update an invoice
+      parameters:
+      - $ref: '#/components/parameters/TenantId'
+      - $ref: '#/components/parameters/IntIdQuery'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          description: The updated invoice.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteInvoice
+      tags:
+      - Invoices
+      summary: Delete an invoice
+      parameters:
+      - $ref: '#/components/parameters/TenantId'
+      - $ref: '#/components/parameters/IntIdQuery'
+      responses:
+        '200':
+          description: Deletion confirmation.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Invoice/GetById:
+    get:
+      operationId: getInvoiceById
+      tags:
+      - Invoices
+      summary: Retrieve an invoice by integer ID
+      parameters:
+      - $ref: '#/components/parameters/IntId'
+      - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: The requested invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    IntIdQuery:
+      name: Id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    SearchRequest:
+      type: object
+      description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        searchTerm:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        activeStatus:
+          type: string
+          enum:
+          - active
+          - inactive
+          - all
+        pageNumber:
+          type: integer
+          default: 1
+        pageSize:
+          type: integer
+          default: 50
+    InvoiceList:
+      $ref: '#/components/schemas/PagedResult'
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        invoiceId:
+          type: integer
+          format: int64
+        invoiceNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        netTotal:
+          type: number
+        taxTotal:
+          type: number
+        grossTotal:
+          type: number
+        issueDate:
+          type: string
+          format: date-time
+  securitySchemes:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: 'OAuth2 client-credentials grant against the Joblogic IdentityServer. The confirmed UAT token endpoint is https://uatidentityserver.joblogic.com/connect/token; the production IdentityServer token endpoint is provided to callers during onboarding. Send client_id, client_secret, grant_type=client_credentials, and the issued scope, then pass the returned access token as `Authorization: Bearer <access_token>`. Tokens expire after one hour.'
+      flows:
+        clientCredentials:
+          tokenUrl: https://uatidentityserver.joblogic.com/connect/token
+          scopes: {}

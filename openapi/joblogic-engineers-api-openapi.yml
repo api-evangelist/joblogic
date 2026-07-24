@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Joblogic Assets Engineers API
+  description: 'The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors. All resource paths sit under `/api/v1`.
+
+
+    Access model: Joblogic API access is customer-provisioned and gated. A caller is issued a Client ID, Client Secret, and Tenant ID by Joblogic, and the caller''s public IP addresses are allowlisted behind Joblogic''s firewall before requests are accepted. Integrations are first developed against a per-customer UAT sandbox (web app at https://uat.joblogic.com, API host https://uatapi.joblogic.com) and then promoted to production.
+
+
+    Authentication: Each request must carry a Bearer access token obtained from the Joblogic IdentityServer token endpoint using the OAuth2 client-credentials grant (client_id, client_secret, grant_type, scope). Access tokens expire after one hour; expired or missing tokens return 401 Unauthorized.
+
+
+    Multi-tenancy: Most operations require a `tenantId` (the caller''s Joblogic tenant, a GUID) supplied as a query parameter.
+
+
+    Modeling note: This document is modeled by API Evangelist from Joblogic''s published Postman documentation at https://apidocs.joblogic.com/. Endpoint paths, methods, and the auth flow are confirmed from that collection. Request and response schemas are representative - the live API is IP-allowlisted, so payload bodies could not be exercised directly and are illustrative rather than exhaustive.'
+  version: v1
+  contact:
+    name: Joblogic Support
+    url: https://support.joblogic.com/docs/api-access
+    email: support@joblogic.com
+servers:
+- url: https://api.joblogic.com/api/v1
+  description: Production API host (live; firewall / IP-allowlisted, customer-provisioned). The exact production host is confirmed to callers during onboarding.
+- url: https://uatapi.joblogic.com/api/v1
+  description: UAT sandbox API host used for integration development.
+security:
+- oauth2ClientCredentials: []
+tags:
+- name: Engineers
+  description: Field engineers / mobile workforce.
+paths:
+  /Engineer/GetAll:
+    post:
+      operationId: searchEngineers
+      tags:
+      - Engineers
+      summary: Search engineers
+      parameters:
+      - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: A page of matching engineers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineerList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Engineer/GetById:
+    get:
+      operationId: getEngineerById
+      tags:
+      - Engineers
+      summary: Retrieve an engineer by integer ID
+      parameters:
+      - $ref: '#/components/parameters/IntId'
+      - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: The requested engineer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Engineer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Engineer/MarkOnCall:
+    post:
+      operationId: markEngineerOnCall
+      tags:
+      - Engineers
+      summary: Mark an engineer as on-call
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Engineer marked on-call.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    EngineerList:
+      $ref: '#/components/schemas/PagedResult'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    Engineer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        engineerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        isActive:
+          type: boolean
+    SearchRequest:
+      type: object
+      description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        searchTerm:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        activeStatus:
+          type: string
+          enum:
+          - active
+          - inactive
+          - all
+        pageNumber:
+          type: integer
+          default: 1
+        pageSize:
+          type: integer
+          default: 50
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+  parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: 'OAuth2 client-credentials grant against the Joblogic IdentityServer. The confirmed UAT token endpoint is https://uatidentityserver.joblogic.com/connect/token; the production IdentityServer token endpoint is provided to callers during onboarding. Send client_id, client_secret, grant_type=client_credentials, and the issued scope, then pass the returned access token as `Authorization: Bearer <access_token>`. Tokens expire after one hour.'
+      flows:
+        clientCredentials:
+          tokenUrl: https://uatidentityserver.joblogic.com/connect/token
+          scopes: {}
