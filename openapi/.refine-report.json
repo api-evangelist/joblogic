@@ -1,0 +1,30 @@
+{
+  "provider": "joblogic",
+  "sources": [
+    "joblogic-assets-api-openapi.yml",
+    "joblogic-contacts-api-openapi.yml",
+    "joblogic-customers-api-openapi.yml",
+    "joblogic-engineers-api-openapi.yml",
+    "joblogic-invoices-api-openapi.yml",
+    "joblogic-jobs-api-openapi.yml",
+    "joblogic-quotes-api-openapi.yml",
+    "joblogic-sites-api-openapi.yml",
+    "joblogic-visits-api-openapi.yml"
+  ],
+  "outputs": [
+    "joblogic-assets-api-openapi.yml",
+    "joblogic-contacts-api-openapi.yml",
+    "joblogic-customers-api-openapi.yml",
+    "joblogic-engineers-api-openapi.yml",
+    "joblogic-invoices-api-openapi.yml",
+    "joblogic-jobs-api-openapi.yml",
+    "joblogic-quotes-api-openapi.yml",
+    "joblogic-sites-api-openapi.yml",
+    "joblogic-visits-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
