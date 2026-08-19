@@ -1,0 +1,224 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Joblogic Assets Jobs API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://uatidentityserver.joblogic.com/connect/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Job/getall",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches jobs by conditions such as keyword, status, dates, and tags."
+        },
+        {
+          "info": {
+            "name": "Retrieve a job by unique ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Job",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              },
+              {
+                "name": "includeAdditionalDetails",
+                "value": "",
+                "type": "query",
+                "description": "When true, expands nested/related detail in the response."
+              }
+            ]
+          },
+          "docs": "Retrieve a job by unique ID"
+        },
+        {
+          "info": {
+            "name": "Create a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Job",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a job"
+        },
+        {
+          "info": {
+            "name": "Update a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Job",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a job"
+        },
+        {
+          "info": {
+            "name": "Delete a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Job",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ]
+          },
+          "docs": "Delete a job"
+        },
+        {
+          "info": {
+            "name": "Get job details by integer ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Job/GetById",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's integer identifier."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ]
+          },
+          "docs": "Get job details by integer ID"
+        },
+        {
+          "info": {
+            "name": "Update job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Job/updatestatus",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update job status"
+        },
+        {
+          "info": {
+            "name": "Get all costs for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/JobCost",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              },
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get all costs for a job"
+        },
+        {
+          "info": {
+            "name": "Add a labour cost to a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/JobCost/Labour",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a labour cost to a job"
+        },
+        {
+          "info": {
+            "name": "Add a material cost to a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/JobCost/Material",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a material cost to a job"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

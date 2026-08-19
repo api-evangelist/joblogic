@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Joblogic Assets Customers API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://uatidentityserver.joblogic.com/connect/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Customer/GetAll",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches customers by keyword, tags, and active status."
+        },
+        {
+          "info": {
+            "name": "Get a customer by unique ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Customer",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              },
+              {
+                "name": "includeAdditionalDetails",
+                "value": "",
+                "type": "query",
+                "description": "When true, expands nested/related detail in the response."
+              }
+            ]
+          },
+          "docs": "Retrieves a customer by its unique GUID."
+        },
+        {
+          "info": {
+            "name": "Create a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Customer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a customer"
+        },
+        {
+          "info": {
+            "name": "Update a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Customer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a customer"
+        },
+        {
+          "info": {
+            "name": "Delete a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Customer",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ]
+          },
+          "docs": "Delete a customer"
+        },
+        {
+          "info": {
+            "name": "Get a customer by integer ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Customer/GetById",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's integer identifier."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              },
+              {
+                "name": "includeAdditionalDetails",
+                "value": "",
+                "type": "query",
+                "description": "When true, expands nested/related detail in the response."
+              }
+            ]
+          },
+          "docs": "Get a customer by integer ID"
+        },
+        {
+          "info": {
+            "name": "Set customer status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Customer/SetStatus",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Activates or deactivates a customer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

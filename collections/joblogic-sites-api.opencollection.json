@@ -1,0 +1,183 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Joblogic Assets Sites API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://uatidentityserver.joblogic.com/connect/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search sites",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Site/GetAll",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches sites by keyword, tags, customer, and active status."
+        },
+        {
+          "info": {
+            "name": "Get a site by unique ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Site",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              },
+              {
+                "name": "includeAdditionalDetails",
+                "value": "",
+                "type": "query",
+                "description": "When true, expands nested/related detail in the response."
+              }
+            ]
+          },
+          "docs": "Get a site by unique ID"
+        },
+        {
+          "info": {
+            "name": "Create a site",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Site",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a site"
+        },
+        {
+          "info": {
+            "name": "Update a site",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.joblogic.com/api/v1/Site",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a site"
+        },
+        {
+          "info": {
+            "name": "Delete a site",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.joblogic.com/api/v1/Site",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's unique identifier (GUID)."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ]
+          },
+          "docs": "Delete a site"
+        },
+        {
+          "info": {
+            "name": "Get a site by integer ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Site/GetById",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's integer identifier."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              },
+              {
+                "name": "includeAdditionalDetails",
+                "value": "",
+                "type": "query",
+                "description": "When true, expands nested/related detail in the response."
+              }
+            ]
+          },
+          "docs": "Get a site by integer ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

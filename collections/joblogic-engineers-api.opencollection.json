@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Joblogic Assets Engineers API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://uatidentityserver.joblogic.com/connect/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Engineers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search engineers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Engineer/GetAll",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search engineers"
+        },
+        {
+          "info": {
+            "name": "Retrieve an engineer by integer ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.joblogic.com/api/v1/Engineer/GetById",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The resource's integer identifier."
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "query",
+                "description": "The caller's Joblogic tenant identifier (GUID)."
+              }
+            ]
+          },
+          "docs": "Retrieve an engineer by integer ID"
+        },
+        {
+          "info": {
+            "name": "Mark an engineer as on-call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.joblogic.com/api/v1/Engineer/MarkOnCall",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mark an engineer as on-call"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
