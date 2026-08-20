@@ -34,6 +34,16 @@ tags:
 - Mobile Workforce
 - Trades
 - CRM
+- Software-as-a-Service
+tags_raw:
+- Field Service Management
+- Job Management
+- Scheduling
+- Maintenance
+- Workforce
+- Mobile Workforce
+- Trades
+- CRM
 - SaaS
 created: '2026-07-12'
 modified: '2026-07-12'
@@ -135,6 +145,8 @@ apis:
   humanURL: https://apidocs.joblogic.com/
   baseURL: https://api.joblogic.com/api/v1
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
