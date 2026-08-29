@@ -11,6 +11,18 @@ description: Joblogic is a cloud field service management (FSM) platform for
   events. API access is customer-provisioned - Joblogic issues a Client ID,
   Client Secret, and Tenant ID and IP-allowlists callers behind a firewall,
   with a UAT sandbox for integration development.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
