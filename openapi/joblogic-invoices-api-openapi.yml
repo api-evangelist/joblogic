@@ -1,19 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Joblogic Assets Invoices API
-  description: 'The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors. All resource paths sit under `/api/v1`.
-
-
-    Access model: Joblogic API access is customer-provisioned and gated. A caller is issued a Client ID, Client Secret, and Tenant ID by Joblogic, and the caller''s public IP addresses are allowlisted behind Joblogic''s firewall before requests are accepted. Integrations are first developed against a per-customer UAT sandbox (web app at https://uat.joblogic.com, API host https://uatapi.joblogic.com) and then promoted to production.
-
-
-    Authentication: Each request must carry a Bearer access token obtained from the Joblogic IdentityServer token endpoint using the OAuth2 client-credentials grant (client_id, client_secret, grant_type, scope). Access tokens expire after one hour; expired or missing tokens return 401 Unauthorized.
-
-
-    Multi-tenancy: Most operations require a `tenantId` (the caller''s Joblogic tenant, a GUID) supplied as a query parameter.
-
-
-    Modeling note: This document is modeled by API Evangelist from Joblogic''s published Postman documentation at https://apidocs.joblogic.com/. Endpoint paths, methods, and the auth flow are confirmed from that collection. Request and response schemas are representative - the live API is IP-allowlisted, so payload bodies could not be exercised directly and are illustrative rather than exhaustive.'
+  title: Joblogic Invoices API
+  description: The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors.
   version: v1
   contact:
     name: Joblogic Support
@@ -130,44 +118,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    IntIdQuery:
-      name: Id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
   schemas:
     Error:
       type: object
@@ -204,22 +154,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    InvoiceList:
-      $ref: '#/components/schemas/PagedResult'
-    PagedResult:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
     Invoice:
       type: object
       properties:
@@ -248,6 +182,60 @@ components:
         issueDate:
           type: string
           format: date-time
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+    InvoiceList:
+      $ref: '#/components/schemas/PagedResult'
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    IntIdQuery:
+      name: Id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

@@ -1,15 +1,7 @@
 {
   "provider": "joblogic",
   "sources": [
-    "joblogic-assets-api-openapi.yml",
-    "joblogic-contacts-api-openapi.yml",
-    "joblogic-customers-api-openapi.yml",
-    "joblogic-engineers-api-openapi.yml",
-    "joblogic-invoices-api-openapi.yml",
-    "joblogic-jobs-api-openapi.yml",
-    "joblogic-quotes-api-openapi.yml",
-    "joblogic-sites-api-openapi.yml",
-    "joblogic-visits-api-openapi.yml"
+    "_original/joblogic-openapi.yml"
   ],
   "outputs": [
     "joblogic-assets-api-openapi.yml",
@@ -25,6 +17,20 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "joblogic-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "joblogic-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-engineers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-quotes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-sites-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "joblogic-visits-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

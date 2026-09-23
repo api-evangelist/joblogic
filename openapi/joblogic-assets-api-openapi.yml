@@ -1,19 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Joblogic Assets API
-  description: 'The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors. All resource paths sit under `/api/v1`.
-
-
-    Access model: Joblogic API access is customer-provisioned and gated. A caller is issued a Client ID, Client Secret, and Tenant ID by Joblogic, and the caller''s public IP addresses are allowlisted behind Joblogic''s firewall before requests are accepted. Integrations are first developed against a per-customer UAT sandbox (web app at https://uat.joblogic.com, API host https://uatapi.joblogic.com) and then promoted to production.
-
-
-    Authentication: Each request must carry a Bearer access token obtained from the Joblogic IdentityServer token endpoint using the OAuth2 client-credentials grant (client_id, client_secret, grant_type, scope). Access tokens expire after one hour; expired or missing tokens return 401 Unauthorized.
-
-
-    Multi-tenancy: Most operations require a `tenantId` (the caller''s Joblogic tenant, a GUID) supplied as a query parameter.
-
-
-    Modeling note: This document is modeled by API Evangelist from Joblogic''s published Postman documentation at https://apidocs.joblogic.com/. Endpoint paths, methods, and the auth flow are confirmed from that collection. Request and response schemas are representative - the live API is IP-allowlisted, so payload bodies could not be exercised directly and are illustrative rather than exhaustive.'
+  description: The Joblogic API is the REST interface to the Joblogic cloud field service management (FSM) platform, covering customers, contacts, sites, assets, jobs, engineer visits, engineers, quotes, and invoices for trades, service, and maintenance contractors.
   version: v1
   contact:
     name: Joblogic Support
@@ -126,26 +114,15 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
+    IncludeAdditionalDetails:
+      name: includeAdditionalDetails
+      in: query
+      required: false
+      description: When true, expands nested/related detail in the response.
+      schema:
+        type: boolean
+        default: false
     TenantId:
       name: tenantId
       in: query
@@ -162,14 +139,6 @@ components:
       schema:
         type: string
         format: uuid
-    IncludeAdditionalDetails:
-      name: includeAdditionalDetails
-      in: query
-      required: false
-      description: When true, expands nested/related detail in the response.
-      schema:
-        type: boolean
-        default: false
   schemas:
     Error:
       type: object
@@ -181,6 +150,8 @@ components:
         details:
           type: object
           additionalProperties: true
+    AssetList:
+      $ref: '#/components/schemas/PagedResult'
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -206,22 +177,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    PagedResult:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
-    AssetList:
-      $ref: '#/components/schemas/PagedResult'
     Asset:
       type: object
       properties:
@@ -244,6 +199,39 @@ components:
           type: string
         model:
           type: string
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+  responses:
+    TooManyRequests:
+      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2
