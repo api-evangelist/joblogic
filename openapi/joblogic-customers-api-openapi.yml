@@ -160,6 +160,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
     SetStatusRequest:
       type: object
       properties:
@@ -172,53 +186,6 @@ components:
           type: string
     CustomerList:
       $ref: '#/components/schemas/PagedResult'
-    Address:
-      type: object
-      properties:
-        line1:
-          type: string
-        line2:
-          type: string
-        city:
-          type: string
-        county:
-          type: string
-        postcode:
-          type: string
-        country:
-          type: string
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    Customer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        customerId:
-          type: integer
-          format: int64
-        name:
-          type: string
-        accountReference:
-          type: string
-        telephone:
-          type: string
-        email:
-          type: string
-          format: email
-        address:
-          $ref: '#/components/schemas/Address'
-        isActive:
-          type: boolean
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -244,62 +211,56 @@ components:
         pageSize:
           type: integer
           default: 50
-    PagedResult:
+    Customer:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        pageNumber:
+        id:
+          type: string
+          format: uuid
+        customerId:
           type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
-  parameters:
-    IncludeAdditionalDetails:
-      name: includeAdditionalDetails
-      in: query
-      required: false
-      description: When true, expands nested/related detail in the response.
-      schema:
-        type: boolean
-        default: false
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
-    UniqueId:
-      name: id
-      in: query
-      required: true
-      description: The resource's unique identifier (GUID).
-      schema:
-        type: string
-        format: uuid
+          format: int64
+        name:
+          type: string
+        accountReference:
+          type: string
+        telephone:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        isActive:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        county:
+          type: string
+        postcode:
+          type: string
+        country:
+          type: string
   responses:
     ValidationError:
       description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
       content:
         application/json:
           schema:
@@ -316,6 +277,45 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IncludeAdditionalDetails:
+      name: includeAdditionalDetails
+      in: query
+      required: false
+      description: When true, expands nested/related detail in the response.
+      schema:
+        type: boolean
+        default: false
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

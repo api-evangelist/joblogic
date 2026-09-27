@@ -119,41 +119,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
+    PagedResult:
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    SearchRequest:
-      type: object
-      description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
-      properties:
-        tenantId:
-          type: string
-          format: uuid
-        searchTerm:
-          type: string
-        tags:
+        data:
           type: array
           items:
-            type: string
-        activeStatus:
-          type: string
-          enum:
-          - active
-          - inactive
-          - all
+            type: object
+            additionalProperties: true
         pageNumber:
           type: integer
-          default: 1
         pageSize:
           type: integer
-          default: 50
+        totalCount:
+          type: integer
     Invoice:
       type: object
       properties:
@@ -182,20 +161,41 @@ components:
         issueDate:
           type: string
           format: date-time
-    PagedResult:
+    SearchRequest:
       type: object
+      description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
       properties:
-        data:
+        tenantId:
+          type: string
+          format: uuid
+        searchTerm:
+          type: string
+        tags:
           type: array
           items:
-            type: object
-            additionalProperties: true
+            type: string
+        activeStatus:
+          type: string
+          enum:
+          - active
+          - inactive
+          - all
         pageNumber:
           type: integer
+          default: 1
         pageSize:
           type: integer
-        totalCount:
-          type: integer
+          default: 50
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
     InvoiceList:
       $ref: '#/components/schemas/PagedResult'
   responses:
@@ -212,16 +212,16 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
-    IntId:
-      name: id
+    IntIdQuery:
+      name: Id
       in: query
       required: true
       description: The resource's integer identifier.
       schema:
         type: integer
         format: int64
-    IntIdQuery:
-      name: Id
+    IntId:
+      name: id
       in: query
       required: true
       description: The resource's integer identifier.

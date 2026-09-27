@@ -136,43 +136,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Quote:
+    PagedResult:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        quoteId:
-          type: integer
-          format: int64
-        quoteNumber:
-          type: string
-        customerId:
-          type: string
-          format: uuid
-        siteId:
-          type: string
-          format: uuid
-        status:
-          type: string
-        total:
-          type: number
-        tags:
+        data:
           type: array
           items:
-            type: string
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    QuoteList:
-      $ref: '#/components/schemas/PagedResult'
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -198,20 +175,43 @@ components:
         pageSize:
           type: integer
           default: 50
-    PagedResult:
+    Error:
       type: object
       properties:
-        data:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    Quote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        quoteId:
+          type: integer
+          format: int64
+        quoteNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        total:
+          type: number
+        tags:
           type: array
           items:
-            type: object
-            additionalProperties: true
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
+            type: string
+    QuoteList:
+      $ref: '#/components/schemas/PagedResult'
   parameters:
     IntIdQuery:
       name: Id

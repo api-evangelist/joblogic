@@ -127,18 +127,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    VisitList:
-      $ref: '#/components/schemas/PagedResult'
-    Error:
+    PagedResult:
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -187,20 +189,25 @@ components:
         endDateTime:
           type: string
           format: date-time
-    PagedResult:
+    Error:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    VisitList:
+      $ref: '#/components/schemas/PagedResult'
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     IntId:
       name: id
@@ -210,14 +217,6 @@ components:
       schema:
         type: integer
         format: int64
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
     UniqueId:
       name: id
       in: query
@@ -226,13 +225,14 @@ components:
       schema:
         type: string
         format: uuid
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2
