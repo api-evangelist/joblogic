@@ -95,22 +95,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
-    UniqueId:
-      name: id
-      in: query
-      required: true
-      description: The resource's unique identifier (GUID).
-      schema:
-        type: string
-        format: uuid
     TenantId:
       name: tenantId
       in: query
@@ -119,17 +104,15 @@ components:
       schema:
         type: string
         format: uuid
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
     Contact:
       type: object
       properties:
@@ -150,6 +133,23 @@ components:
           type: string
         jobTitle:
           type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

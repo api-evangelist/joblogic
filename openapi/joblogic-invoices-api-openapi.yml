@@ -118,7 +118,34 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntIdQuery:
+      name: Id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
   schemas:
+    InvoiceList:
+      $ref: '#/components/schemas/PagedResult'
     PagedResult:
       type: object
       properties:
@@ -133,6 +160,31 @@ components:
           type: integer
         totalCount:
           type: integer
+    SearchRequest:
+      type: object
+      description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        searchTerm:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        activeStatus:
+          type: string
+          enum:
+          - active
+          - inactive
+          - all
+        pageNumber:
+          type: integer
+          default: 1
+        pageSize:
+          type: integer
+          default: 50
     Invoice:
       type: object
       properties:
@@ -161,31 +213,6 @@ components:
         issueDate:
           type: string
           format: date-time
-    SearchRequest:
-      type: object
-      description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
-      properties:
-        tenantId:
-          type: string
-          format: uuid
-        searchTerm:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-        activeStatus:
-          type: string
-          enum:
-          - active
-          - inactive
-          - all
-        pageNumber:
-          type: integer
-          default: 1
-        pageSize:
-          type: integer
-          default: 50
     Error:
       type: object
       properties:
@@ -196,46 +223,19 @@ components:
         details:
           type: object
           additionalProperties: true
-    InvoiceList:
-      $ref: '#/components/schemas/PagedResult'
   responses:
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing, invalid, or expired access token.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    IntIdQuery:
-      name: Id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

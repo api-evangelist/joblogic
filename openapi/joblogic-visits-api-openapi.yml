@@ -126,6 +126,31 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   schemas:
     PagedResult:
       type: object
@@ -189,6 +214,8 @@ components:
         endDateTime:
           type: string
           format: date-time
+    VisitList:
+      $ref: '#/components/schemas/PagedResult'
     Error:
       type: object
       properties:
@@ -199,8 +226,6 @@ components:
         details:
           type: object
           additionalProperties: true
-    VisitList:
-      $ref: '#/components/schemas/PagedResult'
   responses:
     Unauthorized:
       description: Missing, invalid, or expired access token.
@@ -208,31 +233,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    UniqueId:
-      name: id
-      in: query
-      required: true
-      description: The resource's unique identifier (GUID).
-      schema:
-        type: string
-        format: uuid
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

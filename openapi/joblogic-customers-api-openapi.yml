@@ -160,6 +160,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    CustomerList:
+      $ref: '#/components/schemas/PagedResult'
     PagedResult:
       type: object
       properties:
@@ -184,8 +186,43 @@ components:
           format: uuid
         status:
           type: string
-    CustomerList:
-      $ref: '#/components/schemas/PagedResult'
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        accountReference:
+          type: string
+        telephone:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        isActive:
+          type: boolean
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        county:
+          type: string
+        postcode:
+          type: string
+        country:
+          type: string
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -211,28 +248,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    Customer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        customerId:
-          type: integer
-          format: int64
-        name:
-          type: string
-        accountReference:
-          type: string
-        telephone:
-          type: string
-        email:
-          type: string
-          format: email
-        address:
-          $ref: '#/components/schemas/Address'
-        isActive:
-          type: boolean
     Error:
       type: object
       properties:
@@ -243,47 +258,15 @@ components:
         details:
           type: object
           additionalProperties: true
-    Address:
-      type: object
-      properties:
-        line1:
-          type: string
-        line2:
-          type: string
-        city:
-          type: string
-        county:
-          type: string
-        postcode:
-          type: string
-        country:
-          type: string
-  responses:
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
     IntId:
       name: id
       in: query
@@ -308,14 +291,31 @@ components:
       schema:
         type: boolean
         default: false
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
+  responses:
+    TooManyRequests:
+      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

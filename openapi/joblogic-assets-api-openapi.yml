@@ -115,6 +115,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    AssetList:
+      $ref: '#/components/schemas/PagedResult'
     PagedResult:
       type: object
       properties:
@@ -129,6 +131,28 @@ components:
           type: integer
         totalCount:
           type: integer
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        assetId:
+          type: integer
+          format: int64
+        siteId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        assetClass:
+          type: string
+        serialNumber:
+          type: string
+        make:
+          type: string
+        model:
+          type: string
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -164,47 +188,7 @@ components:
         details:
           type: object
           additionalProperties: true
-    Asset:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        assetId:
-          type: integer
-          format: int64
-        siteId:
-          type: string
-          format: uuid
-        name:
-          type: string
-        assetClass:
-          type: string
-        serialNumber:
-          type: string
-        make:
-          type: string
-        model:
-          type: string
-    AssetList:
-      $ref: '#/components/schemas/PagedResult'
   parameters:
-    IncludeAdditionalDetails:
-      name: includeAdditionalDetails
-      in: query
-      required: false
-      description: When true, expands nested/related detail in the response.
-      schema:
-        type: boolean
-        default: false
-    UniqueId:
-      name: id
-      in: query
-      required: true
-      description: The resource's unique identifier (GUID).
-      schema:
-        type: string
-        format: uuid
     TenantId:
       name: tenantId
       in: query
@@ -213,9 +197,25 @@ components:
       schema:
         type: string
         format: uuid
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IncludeAdditionalDetails:
+      name: includeAdditionalDetails
+      in: query
+      required: false
+      description: When true, expands nested/related detail in the response.
+      schema:
+        type: boolean
+        default: false
   responses:
-    NotFound:
-      description: The requested resource was not found.
+    TooManyRequests:
+      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
       content:
         application/json:
           schema:
@@ -226,8 +226,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:

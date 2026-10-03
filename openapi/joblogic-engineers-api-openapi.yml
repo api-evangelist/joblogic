@@ -78,6 +78,23 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
   schemas:
     PagedResult:
       type: object
@@ -93,8 +110,6 @@ components:
           type: integer
         totalCount:
           type: integer
-    EngineerList:
-      $ref: '#/components/schemas/PagedResult'
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -120,16 +135,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
     Engineer:
       type: object
       properties:
@@ -148,6 +153,18 @@ components:
           type: string
         isActive:
           type: boolean
+    EngineerList:
+      $ref: '#/components/schemas/PagedResult'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
   responses:
     Unauthorized:
       description: Missing, invalid, or expired access token.
@@ -155,23 +172,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

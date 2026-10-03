@@ -136,6 +136,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    QuoteList:
+      $ref: '#/components/schemas/PagedResult'
     PagedResult:
       type: object
       properties:
@@ -150,6 +152,31 @@ components:
           type: integer
         totalCount:
           type: integer
+    Quote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        quoteId:
+          type: integer
+          format: int64
+        quoteNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        total:
+          type: number
+        tags:
+          type: array
+          items:
+            type: string
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -185,42 +212,7 @@ components:
         details:
           type: object
           additionalProperties: true
-    Quote:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        quoteId:
-          type: integer
-          format: int64
-        quoteNumber:
-          type: string
-        customerId:
-          type: string
-          format: uuid
-        siteId:
-          type: string
-          format: uuid
-        status:
-          type: string
-        total:
-          type: number
-        tags:
-          type: array
-          items:
-            type: string
-    QuoteList:
-      $ref: '#/components/schemas/PagedResult'
   parameters:
-    IntIdQuery:
-      name: Id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
     TenantId:
       name: tenantId
       in: query
@@ -229,6 +221,14 @@ components:
       schema:
         type: string
         format: uuid
+    IntIdQuery:
+      name: Id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
   responses:
     Unauthorized:
       description: Missing, invalid, or expired access token.
