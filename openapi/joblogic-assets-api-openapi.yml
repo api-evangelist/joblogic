@@ -114,23 +114,51 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    UniqueId:
+      name: id
+      in: query
+      required: true
+      description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IncludeAdditionalDetails:
+      name: includeAdditionalDetails
+      in: query
+      required: false
+      description: When true, expands nested/related detail in the response.
+      schema:
+        type: boolean
+        default: false
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   schemas:
-    AssetList:
-      $ref: '#/components/schemas/PagedResult'
-    PagedResult:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
     Asset:
       type: object
       properties:
@@ -153,6 +181,22 @@ components:
           type: string
         model:
           type: string
+    AssetList:
+      $ref: '#/components/schemas/PagedResult'
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -188,50 +232,6 @@ components:
         details:
           type: object
           additionalProperties: true
-  parameters:
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
-    UniqueId:
-      name: id
-      in: query
-      required: true
-      description: The resource's unique identifier (GUID).
-      schema:
-        type: string
-        format: uuid
-    IncludeAdditionalDetails:
-      name: includeAdditionalDetails
-      in: query
-      required: false
-      description: When true, expands nested/related detail in the response.
-      schema:
-        type: boolean
-        default: false
-  responses:
-    TooManyRequests:
-      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

@@ -135,23 +135,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    QuoteList:
-      $ref: '#/components/schemas/PagedResult'
-    PagedResult:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
     Quote:
       type: object
       properties:
@@ -177,6 +168,20 @@ components:
           type: array
           items:
             type: string
+    PagedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -202,6 +207,8 @@ components:
         pageSize:
           type: integer
           default: 50
+    QuoteList:
+      $ref: '#/components/schemas/PagedResult'
     Error:
       type: object
       properties:
@@ -229,13 +236,6 @@ components:
       schema:
         type: integer
         format: int64
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

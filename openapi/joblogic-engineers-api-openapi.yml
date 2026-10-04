@@ -78,15 +78,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
     IntId:
       name: id
       in: query
@@ -95,7 +94,35 @@ components:
       schema:
         type: integer
         format: int64
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
   schemas:
+    EngineerList:
+      $ref: '#/components/schemas/PagedResult'
+    Engineer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        engineerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        isActive:
+          type: boolean
     PagedResult:
       type: object
       properties:
@@ -135,26 +162,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    Engineer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        engineerId:
-          type: integer
-          format: int64
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        telephone:
-          type: string
-        isActive:
-          type: boolean
-    EngineerList:
-      $ref: '#/components/schemas/PagedResult'
     Error:
       type: object
       properties:
@@ -165,13 +172,6 @@ components:
         details:
           type: object
           additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

@@ -95,20 +95,27 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
     UniqueId:
       name: id
       in: query
       required: true
       description: The resource's unique identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
       schema:
         type: string
         format: uuid
@@ -143,13 +150,6 @@ components:
         details:
           type: object
           additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

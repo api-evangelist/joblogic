@@ -118,34 +118,50 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
-    IntIdQuery:
-      name: Id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     InvoiceList:
       $ref: '#/components/schemas/PagedResult'
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        invoiceId:
+          type: integer
+          format: int64
+        invoiceNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        netTotal:
+          type: number
+        taxTotal:
+          type: number
+        grossTotal:
+          type: number
+        issueDate:
+          type: string
+          format: date-time
     PagedResult:
       type: object
       properties:
@@ -185,34 +201,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    Invoice:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        invoiceId:
-          type: integer
-          format: int64
-        invoiceNumber:
-          type: string
-        customerId:
-          type: string
-          format: uuid
-        jobId:
-          type: string
-          format: uuid
-        status:
-          type: string
-        netTotal:
-          type: number
-        taxTotal:
-          type: number
-        grossTotal:
-          type: number
-        issueDate:
-          type: string
-          format: date-time
     Error:
       type: object
       properties:
@@ -223,19 +211,31 @@ components:
         details:
           type: object
           additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntIdQuery:
+      name: Id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

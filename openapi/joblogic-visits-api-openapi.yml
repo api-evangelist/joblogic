@@ -126,12 +126,19 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    TenantId:
-      name: tenantId
+    UniqueId:
+      name: id
       in: query
       required: true
-      description: The caller's Joblogic tenant identifier (GUID).
+      description: The resource's unique identifier (GUID).
       schema:
         type: string
         format: uuid
@@ -143,15 +150,40 @@ components:
       schema:
         type: integer
         format: int64
-    UniqueId:
-      name: id
+    TenantId:
+      name: tenantId
       in: query
       required: true
-      description: The resource's unique identifier (GUID).
+      description: The caller's Joblogic tenant identifier (GUID).
       schema:
         type: string
         format: uuid
   schemas:
+    VisitList:
+      $ref: '#/components/schemas/PagedResult'
+    Visit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        visitId:
+          type: integer
+          format: int64
+        jobId:
+          type: string
+          format: uuid
+        engineerId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        startDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
     PagedResult:
       type: object
       properties:
@@ -191,31 +223,6 @@ components:
         pageSize:
           type: integer
           default: 50
-    Visit:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        visitId:
-          type: integer
-          format: int64
-        jobId:
-          type: string
-          format: uuid
-        engineerId:
-          type: string
-          format: uuid
-        status:
-          type: string
-        startDateTime:
-          type: string
-          format: date-time
-        endDateTime:
-          type: string
-          format: date-time
-    VisitList:
-      $ref: '#/components/schemas/PagedResult'
     Error:
       type: object
       properties:
@@ -226,13 +233,6 @@ components:
         details:
           type: object
           additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2
