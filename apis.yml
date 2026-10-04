@@ -37,6 +37,9 @@ accessModel:
   generated: '2026-07-22'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/joblogic.png
+x-docs-platform: postman
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-10-03
 tags:
 - Field Service Management
 - Job Management
@@ -226,6 +229,9 @@ apis:
   - type: OpenCollection
     url: collections/joblogic.opencollection.json
 common:
+- type: CapabilityMap
+  url: capabilities/joblogic-capability-edges.yml
+  name: Joblogic Business Capability Map
 - type: AgenticAccess
   url: agentic-access/joblogic-agentic-access.yml
 - type: DomainSecurity
