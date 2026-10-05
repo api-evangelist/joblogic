@@ -1,0 +1,46 @@
+slug: joblogic
+provider: Joblogic
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Customers
+  spec_file: joblogic-customers-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.85
+  evidence: 'POST /Customer createCustomer "Create a customer"; PUT /Customer/SetStatus "Set customer
+    status"; schemas: Customer, Address, CustomerList'
+  reason: Full lifecycle CRUD plus status management over customer records with address data — this is
+    customer master/record management, not sales pipeline or service interaction.
+- tag: Quotes
+  spec_file: joblogic-quotes-api-openapi.yml
+  capability_id: BC-410.40
+  capability_id_l1: BC-410
+  capability_name: Quote & Configuration Management
+  confidence: 0.8
+  evidence: POST /Quote createQuote "Create a quote"; POST /Quote/Approve "Approve a quote"
+  reason: Creation, revision and approval of customer-facing quotes for service work — quote management.
+    Sub-capability is Quote & Configuration Management; no configuration/pricing-engine evidence, so slight
+    ambiguity remains.
+- tag: Invoices
+  spec_file: joblogic-invoices-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.75
+  evidence: POST /Invoice createInvoice "Create an invoice"; GET /Invoice/GetById "Retrieve an invoice
+    by integer ID"
+  reason: Outbound customer invoices raised against service work — customer invoicing sits in Accounts
+    Receivable Management. Confidence tempered because the surface is plain CRUD with no collections/cash-application
+    evidence.
