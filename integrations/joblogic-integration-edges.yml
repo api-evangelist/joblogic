@@ -1,0 +1,659 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/joblogic/integrations
+checked:
+- https://composio.dev/toolkits/joblogic
+- https://monid.ai/tools/joblogic
+- https://n8n.io/integrations/joblogic/
+- https://zapier.com/apps/joblogic/integrations
+summary: null
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: joblogic
+  url: https://zapier.com/apps/joblogic/integrations
+  external_url: https://joblogic.com/
+  partner_tier: BRONZE
+  triggers:
+  - key: list_asset
+    label: List Asset (Beta)
+  - key: list_contacts
+    label: List Contacts (Beta)
+  - key: list_credit
+    label: List Credit (Beta)
+  - key: list_invoice
+    label: List Invoice (Beta)
+  - key: List_Job
+    label: List Job (Beta)
+  - key: list_part
+    label: List Part (Beta)
+  - key: list_purchaseorder
+    label: List Purchase Order (Beta)
+  - key: list_quote
+    label: List Quote (Beta)
+  - key: list_site
+    label: List Site (Beta)
+  - key: list_supplier
+    label: List Supplier (Beta)
+  - key: list_supplierinvoice
+    label: List Supplier Invoice (Beta)
+  - key: new_customer
+    label: List Customers (Beta)
+  actions:
+  - key: Approve_Quote
+    label: Approve Quote
+  - key: assign_contacts_quote
+    label: Assign Contacts to Quote
+  - key: Assign_Contacts_to_Job
+    label: Assign Contacts to Job
+  - key: Cancel_Quote
+    label: Cancel Quote
+  - key: complete_delivery_line_item
+    label: Complete Subcontractor PO Line Item
+  - key: Complete_Supplier_Purchase_Order_Line_Item
+    label: Complete Supplier PO Line Item
+  - key: config_site_warning
+    label: Config Site Warning
+  - key: Create_Area
+    label: Create Area
+  - key: create_asset
+    label: Create Asset
+  - key: Create_Asset_Class
+    label: Create Asset Class
+  - key: Create_Asset_Condition
+    label: Create Asset Condition
+  - key: create_contact
+    label: Create Contact
+  - key: create_credit
+    label: Create Invoice Credit
+  - key: create_customer
+    label: Create Customer
+  - key: Create_Customer_Type
+    label: Create Customer Type
+  - key: create_invoice
+    label: Create Invoice
+  - key: Create_Invoice_Line
+    label: Create Invoice Line
+  - key: Create_Invoice_Payment
+    label: Create Invoice Payment
+  - key: create_job
+    label: Create Job
+  - key: Create_Job_Category
+    label: Create Job Category
+  - key: Create_Nominal_Code
+    label: Create Nominal Code
+  - key: Create_Note_and_Attachment
+    label: Create Note and Attachment (Beta)
+  - key: create_part
+    label: Create Part
+  - key: Create_Part_Category
+    label: Create Part Category
+  - key: create_purchaseorder
+    label: Create Supplier PO
+  - key: Create_Purchase_Order_Line_Item
+    label: Create Supplier PO Line Item
+  - key: create_quote
+    label: Create Quote
+  - key: create_site
+    label: Create Site
+  - key: Create_Site_Type
+    label: Create Site Type
+  - key: Create_Subcontractor
+    label: Create Subcontractor
+  - key: Create_Subcontractor_Purchase_Order
+    label: Create Subcontractor PO
+  - key: Create_Subcontractor_Purchase_Order_Invoice
+    label: Create Subcontractor PO Invoice
+  - key: Create_Subcontractor_Purchase_Order_Invoice_Line_Item
+    label: Create Subcontractor PO Invoice Line Item
+  - key: Create_Subcontractor_Purchase_Order_Line_Item
+    label: Create Subcontractor PO Line Item
+  - key: create_supplier
+    label: Create Supplier
+  - key: create_supplierinvoicetopurchaseorder
+    label: Create Supplier PO Invoice
+  - key: Create_Tax_Code
+    label: Create Tax Code
+  - key: Create_Update_Asset_Tivoli
+    label: Create/Update Asset (Beta)
+  - key: Delete_Area
+    label: Delete Area
+  - key: Delete_Asset
+    label: Delete Asset
+  - key: Delete_Asset_Class
+    label: Delete Asset Class
+  - key: Delete_Asset_Condition
+    label: Delete Asset Condition
+  - key: Delete_Contact
+    label: Delete Contact
+  - key: Delete_Contact_By_Level_Id
+    label: Delete Contact Level Id
+  - key: Delete_Customer
+    label: Delete Customer
+  - key: Delete_Customer_Type
+    label: Delete Customer Type
+  - key: Delete_invoice
+    label: Delete Invoice
+  - key: Delete_InvoiceLine
+    label: Delete Invoice Line
+  - key: Delete_Job
+    label: Delete Job
+  - key: Delete_Job_Category
+    label: Delete Job Category
+  - key: Delete_Nominal_Code
+    label: Delete Nominal Code
+  - key: Delete_Part
+    label: Delete Part
+  - key: Delete_Part_Category
+    label: Delete Part Category
+  - key: Delete_Purchase_Order
+    label: Delete Supplier PO
+  - key: Delete_Purchase_Order_Line_Item
+    label: Delete Supplier PO Line Item
+  - key: Delete_Quote
+    label: Delete Quote
+  - key: Delete_Site
+    label: Delete Site
+  - key: Delete_Site_Type
+    label: Delete Site Type
+  - key: Delete_Subcontractor
+    label: Delete Subcontractor
+  - key: Delete_Subcontractor_Purchase_Order
+    label: Delete Subcontractor PO
+  - key: Delete_Subcontractor_Purchase_Order_Invoice
+    label: Delete Subcontractor PO Invoice
+  - key: Delete_Subcontractor_Purchase_Order_Invoice_Line_Item
+    label: Delete Subcontractor PO Invoice Line Item
+  - key: Delete_Subcontractor_Purchase_Order_Line_Item
+    label: Delete Subcontractor PO Line Item
+  - key: Delete_Supplier
+    label: Delete Supplier
+  - key: Delete_Supplier_Purchase_Order_Invoice
+    label: Delete Supplier PO Invoice
+  - key: Delete_Tax_Code
+    label: Delete Tax Code
+  - key: Export_Report_To_File
+    label: Export Report to File
+  - key: Get_Area
+    label: Get Area
+  - key: Get_Asset_by_auto_id
+    label: Get Asset by Auto Id
+  - key: Get_Asset_by_Unique_Id
+    label: Get Asset by Unique Id
+  - key: Get_Asset_Class
+    label: Get Asset Class
+  - key: Get_Asset_Condition
+    label: Get Asset Condition
+  - key: Get_Contact
+    label: Get Contact
+  - key: Get_Contact_by_Entity
+    label: Get Contact by Entity
+  - key: Get_Credit
+    label: Get Credit
+  - key: Get_Customer_by_Auto_Id
+    label: Get Customer by Auto Id
+  - key: Get_Customer_by_Unique_Id
+    label: Get Customer by Unique Id
+  - key: Get_Customer_Grouped_Credit
+    label: Get Customer Grouped Credit
+  - key: Get_Customer_Grouped_Invoice
+    label: Get Customer Grouped Invoice
+  - key: Get_Customer_Type
+    label: Get Customer Type
+  - key: Get_Engineer
+    label: Get Engineer
+  - key: Get_Exported_Report_Status
+    label: Get Exported Report Status
+  - key: Get_Invoice
+    label: Get Invoice
+  - key: Get_Invoices_by_Purchase_Order_Id
+    label: Get Subcontractor PO Invoices
+  - key: Get_Invoice_Payment
+    label: Get Invoice Payment
+  - key: Get_Job_by_auto_id
+    label: Get Job by Auto Id
+  - key: Get_Job_by_Unique_Id
+    label: Get Job by Unique Id
+  - key: Get_Job_Category
+    label: Get Job Category
+  - key: Get_Job_Type
+    label: Get Job Type
+  - key: Get_Nominal_Code
+    label: Get Nominal Code
+  - key: Get_Part_by_auto_id
+    label: Get Part by Auto Id
+  - key: Get_Part_by_Unique_Id
+    label: Get Part by Unique Id
+  - key: Get_Part_Category
+    label: Get Part Category
+  - key: Get_Payment_by_Invoice
+    label: Get Payment by Invoice
+  - key: Get_priority
+    label: Get Priority
+  - key: Get_Purchase_Order
+    label: Get Supplier PO
+  - key: Get_Quote
+    label: Get Quote
+  - key: Get_Site_by_auto_id
+    label: Get Site by Auto Id
+  - key: Get_Site_by_Unique_Id
+    label: Get Site by Unique Id
+  - key: Get_Site_Type
+    label: Get Site Type
+  - key: get_site_warnings
+    label: Get Site Warnings
+  - key: Get_Staff
+    label: Get Staff
+  - key: Get_subcontractor
+    label: Get Subcontractor
+  - key: Get_Subcontractor_Purchase_Order
+    label: Get Subcontractor PO
+  - key: Get_Subcontractor_Purchase_Order_Line_Item
+    label: Get Subcontractor PO Line Item
+  - key: Get_Supplier
+    label: Get Supplier
+  - key: get_supplierinvoice_po
+    label: Get Supplier Invoices by PO
+  - key: Get_Supplier_PO_Line
+    label: Get Supplier PO Line
+  - key: Get_task
+    label: Get Task
+  - key: Get_Tax_Code
+    label: Get Tax Code
+  - key: Get_visit
+    label: Get Visit by Job
+  - key: Get_visit_by_auto_id
+    label: Get Visit by Auto Id
+  - key: Reject_Quote
+    label: Reject Quote
+  - key: Revert_Quote
+    label: Revert Quote
+  - key: search_contact
+    label: Search Contact
+  - key: search_credit
+    label: Search Credit
+  - key: Search_Customer
+    label: Search Customer
+  - key: Search_Customer_Type
+    label: Search Customer Type
+  - key: search_engineer
+    label: Search Engineer
+  - key: search_invoice
+    label: Search Invoice
+  - key: Search_Job_Type
+    label: Search Job Type
+  - key: Search_Nominal_Code
+    label: Search Nominal Code
+  - key: Search_Priority
+    label: Search Priority
+  - key: search_purchase_order
+    label: Search Supplier PO
+  - key: Search_Reports
+    label: Search Reports
+  - key: Search_Site
+    label: Search Site
+  - key: Search_Site_Type
+    label: Search Site Type
+  - key: Search_Subcontractor
+    label: Search Subcontractor
+  - key: Search_Subcontractor_Purchase_Order
+    label: Search Subcontractor PO
+  - key: search_task
+    label: Search Task
+  - key: Search_Tax_Code
+    label: Search Tax Code
+  - key: UpdateAll_Asset_Condition
+    label: UpdateAll Asset Condition
+  - key: updateall_invoice
+    label: UpdateAll Invoice
+  - key: UpdateAll_Invoice_Payment
+    label: UpdateAll Invoice Payment
+  - key: UpdateAll_Job_Category
+    label: UpdateAll Job Category
+  - key: updateall_po_lineitem
+    label: UpdateAll Supplier PO Line Item
+  - key: UpdateAll_Purchase_Order
+    label: UpdateAll Supplier PO
+  - key: updateall_subcontractor
+    label: UpdateAll Subcontractor
+  - key: updateall_subcontractorpo
+    label: UpdateAll Subcontractor PO
+  - key: UpdateAll_Subcontractor_Purchase_Order_Line_Item
+    label: UpdateAll Subcontractor PO Line Item
+  - key: UpdateAll_Supplier
+    label: UpdateAll Supplier
+  - key: Update_Area
+    label: Update Area
+  - key: Update_Asset
+    label: UpdateAll Asset
+  - key: Update_Asset_Class
+    label: Update Asset Class
+  - key: Update_Asset_Condition
+    label: Update Asset Condition
+  - key: Update_Asset_Replace
+    label: Update Asset
+  - key: update_cert_reg_number
+    label: Update Engineer Registration Number
+  - key: Update_Contact
+    label: UpdateAll Contact
+  - key: Update_Contact_Replace
+    label: Update Contact
+  - key: update_customer
+    label: 'UpdateAll Customer '
+  - key: Update_Customer_Replace
+    label: Update Customer
+  - key: Update_Customer_Type
+    label: Update Customer Type
+  - key: Update_Invoice
+    label: Update Invoice
+  - key: Update_Invoice_Line
+    label: UpdateAll Invoice Line
+  - key: Update_Invoice_Payment
+    label: Update Invoice Payment
+  - key: Update_Job
+    label: UpdateAll Job
+  - key: Update_Job_Category
+    label: Update Job Category
+  - key: Update_Job_Replace
+    label: Update Job
+  - key: Update_Nominal_Code
+    label: Update Nominal Code
+  - key: Update_Part
+    label: UpdateAll Part
+  - key: Update_Part_Category
+    label: Update Part Category
+  - key: Update_Part_Replace
+    label: Update Part
+  - key: Update_Purchase_Order
+    label: Update Supplier PO
+  - key: Update_Purchase_Order_Line_Item
+    label: Update Supplier PO Line Item
+  - key: Update_Quote
+    label: UpdateAll Quote
+  - key: Update_Quote_Replace
+    label: Update Quote
+  - key: Update_Site
+    label: UpdateAll Site
+  - key: Update_Site_Replace
+    label: Update Site
+  - key: Update_Site_Type
+    label: Update Site Type
+  - key: Update_Subcontractor
+    label: Update Subcontractor
+  - key: Update_Subcontractor_Purchase_Order
+    label: Update Subcontractor PO
+  - key: Update_Subcontractor_Purchase_Order_Invoice
+    label: UpdateAll Subcontractor PO Invoice
+  - key: Update_Subcontractor_Purchase_Order_Invoice_Line_Item
+    label: UpdateAll Subcontractor PO Invoice Line Item
+  - key: Update_Subcontractor_Purchase_Order_Line_Item
+    label: Update Subcontractor PO Line Item
+  - key: Update_supplier
+    label: Update Supplier
+  - key: Update_Supplier_Invoice_to_Purchase_Order
+    label: UpdateAll Supplier PO Invoice
+  - key: Update_Tax_Code
+    label: Update Tax Code
+  searches: []
+edges:
+- partner_name: HubSpot
+  partner: hubspot
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/hubspot
+  direction: third-party
+  category: Marketing Automation
+  partner_url: http://www.hubspot.com/
+- partner_name: Xero
+  partner: xero
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/xero
+  direction: third-party
+  category: Accounting
+  partner_url: https://xero5440.partnerlinks.io/uvwuuwrxyoi8
+- partner_name: Zoho Desk
+  partner: zoho-desk
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/zoho-desk
+  direction: third-party
+  category: Customer Support
+  partner_url: https://go.zoho.com/lC3
+- partner_name: Sage Accounting
+  partner: sage-accounting
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/sage-accounting
+  direction: third-party
+  category: Accounting
+  partner_url: https://www.sage.com/en-gb/sage-business-cloud/accounting/
+- partner_name: CallSwitch One
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/callswitch-one
+  direction: third-party
+  category: Communication
+  partner_url: https://www.callswitchone.com/
+- partner_name: Google Docs
+  partner: google-docs
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/google-docs
+  direction: third-party
+  category: Documents
+  partner_url: http://google.com/
+- partner_name: WhatsApp Notifications
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/whatsapp-notifications
+  direction: third-party
+  category: Communication
+  partner_url: null
+- partner_name: Microsoft Teams
+  partner: microsoft-teams
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/microsoft-teams
+  direction: third-party
+  category: Microsoft
+  partner_url: https://products.office.com/en-us/microsoft-teams/group-chat-software
+- partner_name: Microsoft Office 365
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/office-365
+  direction: third-party
+  category: Email
+  partner_url: https://www.office.com/
+- partner_name: Human in the Loop
+  partner: null
+  partner_match: null
+  partner_candidate: zapier
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/human-in-the-loop
+  direction: third-party
+  category: AI Assistants
+  partner_url: https://zapier.com/blog/human-in-the-loop-guide/
+- partner_name: CompanyCam
+  partner: companycam
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/companycam
+  direction: third-party
+  category: Images & Design
+  partner_url: http://companycam.com/
+- partner_name: Revolut Business
+  partner: revolut
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/revolut-for-business
+  direction: third-party
+  category: Payment Processing
+  partner_url: https://business.revolut.com/
+- partner_name: Procore
+  partner: procore
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/procore
+  direction: third-party
+  category: Project Management
+  partner_url: http://www.procore.com/
+- partner_name: Schedule It
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/schedule-it
+  direction: third-party
+  category: Scheduling & Booking
+  partner_url: https://www.scheduleit.co.uk/
+- partner_name: Paperless
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/paperless
+  direction: third-party
+  category: Documents
+  partner_url: https://paperless.io/
+- partner_name: Clappia
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/clappia
+  direction: third-party
+  category: Databases
+  partner_url: https://www.clappia.com/
+- partner_name: Work Wallet
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/work-wallet
+  direction: third-party
+  category: IT Operations
+  partner_url: https://www.work-wallet.com/
+- partner_name: Safepoint
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/joblogic/integrations/safepoint
+  direction: third-party
+  category: Task Management
+  partner_url: https://www.safepointapp.com/
+templates:
+- title: Create Joblogic customers from new Google Sheets rows
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044553/create-joblogic-customers-from-new-google-sheets-rows
+  apps:
+  - google-sheets
+  - joblogic
+- title: Create Joblogic sites from new Google Sheets rows
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044633/create-joblogic-sites-from-new-google-sheets-rows
+  apps:
+  - google-sheets
+  - joblogic
+- title: Add new Joblogic sites to Google Sheets row(s)
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044760/add-new-joblogic-sites-to-google-sheets-rows
+  apps:
+  - joblogic
+  - google-sheets
+- title: Create Joblogic assets from new rows in Google Sheets
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044782/create-joblogic-assets-from-new-rows-in-google-sheets
+  apps:
+  - google-sheets
+  - joblogic
+- title: Create Google Sheets row(s) for new Joblogic assets
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044790/create-google-sheets-rows-for-new-joblogic-assets
+  apps:
+  - joblogic
+  - google-sheets
+- title: Create Joblogic parts from new Google Sheets rows
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044793/create-joblogic-parts-from-new-google-sheets-rows
+  apps:
+  - google-sheets
+  - joblogic
+- title: Store new Joblogic parts in Google Sheets row(s)
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044798/store-new-joblogic-parts-in-google-sheets-rows
+  apps:
+  - joblogic
+  - google-sheets
+- title: Add new Joblogic suppliers to Google Sheets row(s)
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044801/add-new-joblogic-suppliers-to-google-sheets-rows
+  apps:
+  - joblogic
+  - google-sheets
+- title: Create suppliers in Joblogic from new Google Sheets rows
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044805/create-suppliers-in-joblogic-from-new-google-sheets-rows
+  apps:
+  - google-sheets
+  - joblogic
+- title: Store new Joblogic jobs in Google Sheets row(s)
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044814/store-new-joblogic-jobs-in-google-sheets-rows
+  apps:
+  - joblogic
+  - google-sheets
+- title: Add new Joblogic contacts to Google Sheets row(s)
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044819/add-new-joblogic-contacts-to-google-sheets-rows
+  apps:
+  - joblogic
+  - google-sheets
+- title: Create Joblogic jobs from new Google Sheets rows
+  url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044820/create-joblogic-jobs-from-new-google-sheets-rows
+  apps:
+  - google-sheets
+  - joblogic
+template_total: 33
