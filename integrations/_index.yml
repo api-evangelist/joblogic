@@ -99,7 +99,6 @@
   arazzo: null
 - slug: joblogic-microsoft-office-365
   label: Microsoft Office 365
-  partner: microsoft-office-365
   partner_name: Microsoft Office 365
   category: Email
   type: marketplace
@@ -107,7 +106,7 @@
   channel: ipaas-usage
   evidence: https://zapier.com/apps/joblogic/integrations/office-365
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: joblogic-human-in-the-loop
   label: Human in the Loop
@@ -210,4 +209,29 @@
   evidence: https://zapier.com/apps/joblogic/integrations/safepoint
   source: edge
   status: pending-partner-spec
+  arazzo: null
+- slug: joblogic-zapier
+  label: Zapier
+  partner: zapier
+  partner_name: Zapier
+  type: marketplace
+  marketplace: zapier-directory
+  channel: ipaas-listing
+  evidence: https://zapier.com/apps/joblogic/integrations
+  source: edge
+  relationship: ipaas-bridge
+  contract_reference:
+    register: Zapier app directory (zapier.com/api/v4/apps)
+    spec_file: null
+    role: ipaas-connector:zapier
+    registered_name: Joblogic
+    matched_domain: joblogic.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: joblogic
+    beta: false
+    builder: unknown (not in the directory record)
+  status: pending-generation
   arazzo: null
