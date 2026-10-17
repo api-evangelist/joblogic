@@ -126,19 +126,12 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
-    UniqueId:
-      name: id
+    TenantId:
+      name: tenantId
       in: query
       required: true
-      description: The resource's unique identifier (GUID).
+      description: The caller's Joblogic tenant identifier (GUID).
       schema:
         type: string
         format: uuid
@@ -150,40 +143,15 @@ components:
       schema:
         type: integer
         format: int64
-    TenantId:
-      name: tenantId
+    UniqueId:
+      name: id
       in: query
       required: true
-      description: The caller's Joblogic tenant identifier (GUID).
+      description: The resource's unique identifier (GUID).
       schema:
         type: string
         format: uuid
   schemas:
-    VisitList:
-      $ref: '#/components/schemas/PagedResult'
-    Visit:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        visitId:
-          type: integer
-          format: int64
-        jobId:
-          type: string
-          format: uuid
-        engineerId:
-          type: string
-          format: uuid
-        status:
-          type: string
-        startDateTime:
-          type: string
-          format: date-time
-        endDateTime:
-          type: string
-          format: date-time
     PagedResult:
       type: object
       properties:
@@ -198,6 +166,18 @@ components:
           type: integer
         totalCount:
           type: integer
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    VisitList:
+      $ref: '#/components/schemas/PagedResult'
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -223,16 +203,36 @@ components:
         pageSize:
           type: integer
           default: 50
-    Error:
+    Visit:
       type: object
       properties:
-        code:
+        id:
           type: string
-        message:
+          format: uuid
+        visitId:
+          type: integer
+          format: int64
+        jobId:
           type: string
-        details:
-          type: object
-          additionalProperties: true
+          format: uuid
+        engineerId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        startDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2

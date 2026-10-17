@@ -208,32 +208,23 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
+    TenantId:
+      name: tenantId
+      in: query
+      required: true
+      description: The caller's Joblogic tenant identifier (GUID).
+      schema:
+        type: string
+        format: uuid
+    IntId:
+      name: id
+      in: query
+      required: true
+      description: The resource's integer identifier.
+      schema:
+        type: integer
+        format: int64
     UniqueId:
       name: id
       in: query
@@ -250,45 +241,7 @@ components:
       schema:
         type: boolean
         default: false
-    IntId:
-      name: id
-      in: query
-      required: true
-      description: The resource's integer identifier.
-      schema:
-        type: integer
-        format: int64
-    TenantId:
-      name: tenantId
-      in: query
-      required: true
-      description: The caller's Joblogic tenant identifier (GUID).
-      schema:
-        type: string
-        format: uuid
   schemas:
-    JobList:
-      $ref: '#/components/schemas/PagedResult'
-    JobCost:
-      type: object
-      description: A cost line recorded against a job (labour, material, travel, mileage, overtime, expense, subcontractor, SOR item, callout, or other).
-      properties:
-        id:
-          type: string
-          format: uuid
-        jobId:
-          type: string
-          format: uuid
-        type:
-          type: string
-        description:
-          type: string
-        quantity:
-          type: number
-        unitCost:
-          type: number
-        total:
-          type: number
     PagedResult:
       type: object
       properties:
@@ -303,6 +256,18 @@ components:
           type: integer
         totalCount:
           type: integer
+    JobList:
+      $ref: '#/components/schemas/PagedResult'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
     Job:
       type: object
       properties:
@@ -337,6 +302,36 @@ components:
           type: array
           items:
             type: string
+    JobCost:
+      type: object
+      description: A cost line recorded against a job (labour, material, travel, mileage, overtime, expense, subcontractor, SOR item, callout, or other).
+      properties:
+        id:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        type:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: number
+        unitCost:
+          type: number
+        total:
+          type: number
+    SetStatusRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+          format: uuid
+        status:
+          type: string
     SearchRequest:
       type: object
       description: Common search envelope used by the /GetAll and /getall endpoints. Fields shown are representative; consult the live documentation for the exact filters supported per resource.
@@ -362,26 +357,31 @@ components:
         pageSize:
           type: integer
           default: 50
-    SetStatusRequest:
-      type: object
-      properties:
-        id:
-          type: string
-        tenantId:
-          type: string
-          format: uuid
-        status:
-          type: string
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
+  responses:
+    TooManyRequests:
+      description: Rate limit exceeded. Joblogic resource servers limit callers (by default up to 100 requests per minute) and respond with 429.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2ClientCredentials:
       type: oauth2
