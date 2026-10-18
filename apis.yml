@@ -41,7 +41,7 @@ x-docs-platform: postman
 x-docs-platform-confidence: high
 x-docs-platform-checked: 2026-10-03
 tags:
-- Field Service Management
+- Field Service
 - Job Management
 - Scheduling
 - Maintenance
