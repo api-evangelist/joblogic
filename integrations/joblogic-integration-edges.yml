@@ -1,4 +1,4 @@
-generated: '2026-10-12'
+generated: '2026-10-20'
 method: searched
 source:
 - https://zapier.com/apps/joblogic/integrations
@@ -398,204 +398,6 @@ marketplace_apps:
     label: Update Tax Code
   searches: []
 edges:
-- partner_name: HubSpot
-  partner: hubspot
-  partner_match: domain
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/hubspot
-  direction: third-party
-  category: Marketing Automation
-  partner_url: http://www.hubspot.com/
-- partner_name: Xero
-  partner: xero
-  partner_match: name-exact
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/xero
-  direction: third-party
-  category: Accounting
-  partner_url: https://xero5440.partnerlinks.io/uvwuuwrxyoi8
-- partner_name: Zoho Desk
-  partner: zoho-desk
-  partner_match: name-exact
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/zoho-desk
-  direction: third-party
-  category: Customer Support
-  partner_url: https://go.zoho.com/lC3
-- partner_name: Sage Accounting
-  partner: sage-accounting
-  partner_match: name-exact
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/sage-accounting
-  direction: third-party
-  category: Accounting
-  partner_url: https://www.sage.com/en-gb/sage-business-cloud/accounting/
-- partner_name: CallSwitch One
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/callswitch-one
-  direction: third-party
-  category: Communication
-  partner_url: https://www.callswitchone.com/
-- partner_name: Google Docs
-  partner: google-docs
-  partner_match: name-exact
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/google-docs
-  direction: third-party
-  category: Documents
-  partner_url: http://google.com/
-- partner_name: WhatsApp Notifications
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/whatsapp-notifications
-  direction: third-party
-  category: Communication
-  partner_url: null
-- partner_name: Microsoft Teams
-  partner: microsoft-teams
-  partner_match: name-exact
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/microsoft-teams
-  direction: third-party
-  category: Microsoft
-  partner_url: https://products.office.com/en-us/microsoft-teams/group-chat-software
-- partner_name: Microsoft Office 365
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/office-365
-  direction: third-party
-  category: Email
-  partner_url: https://www.office.com/
-- partner_name: Human in the Loop
-  partner: null
-  partner_match: null
-  partner_candidate: zapier
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/human-in-the-loop
-  direction: third-party
-  category: AI Assistants
-  partner_url: https://zapier.com/blog/human-in-the-loop-guide/
-- partner_name: CompanyCam
-  partner: companycam
-  partner_match: domain
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/companycam
-  direction: third-party
-  category: Images & Design
-  partner_url: http://companycam.com/
-- partner_name: Revolut Business
-  partner: revolut
-  partner_match: domain
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/revolut-for-business
-  direction: third-party
-  category: Payment Processing
-  partner_url: https://business.revolut.com/
-- partner_name: Procore
-  partner: procore
-  partner_match: domain
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/procore
-  direction: third-party
-  category: Project Management
-  partner_url: http://www.procore.com/
-- partner_name: Schedule It
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/schedule-it
-  direction: third-party
-  category: Scheduling & Booking
-  partner_url: https://www.scheduleit.co.uk/
-- partner_name: Paperless
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/paperless
-  direction: third-party
-  category: Documents
-  partner_url: https://paperless.io/
-- partner_name: Clappia
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/clappia
-  direction: third-party
-  category: Databases
-  partner_url: https://www.clappia.com/
-- partner_name: Work Wallet
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/work-wallet
-  direction: third-party
-  category: IT Operations
-  partner_url: https://www.work-wallet.com/
-- partner_name: Safepoint
-  partner: null
-  partner_match: null
-  partner_candidate: null
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/joblogic/integrations/safepoint
-  direction: third-party
-  category: Task Management
-  partner_url: https://www.safepointapp.com/
 - partner_name: Zapier
   partner: zapier
   partner_match: aggregator
@@ -621,6 +423,222 @@ edges:
     builder: unknown (not in the directory record)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
+- partner_name: HubSpot
+  partner: hubspot
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/hubspot
+  direction: third-party
+  category: Marketing Automation
+  partner_url: http://www.hubspot.com/
+- partner_name: Xero
+  partner: xero
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/xero
+  direction: third-party
+  category: Accounting
+  partner_url: https://xero5440.partnerlinks.io/uvwuuwrxyoi8
+- partner_name: Zoho Desk
+  partner: zoho-desk
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/zoho-desk
+  direction: third-party
+  category: Customer Support
+  partner_url: https://go.zoho.com/lC3
+- partner_name: Sage Accounting
+  partner: sage-accounting
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/sage-accounting
+  direction: third-party
+  category: Accounting
+  partner_url: https://www.sage.com/en-gb/sage-business-cloud/accounting/
+- partner_name: CallSwitch One
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/callswitch-one
+  direction: third-party
+  category: Communication
+  partner_url: https://www.callswitchone.com/
+- partner_name: Google Docs
+  partner: google-docs
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/google-docs
+  direction: third-party
+  category: Documents
+  partner_url: http://google.com/
+- partner_name: WhatsApp Notifications
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/whatsapp-notifications
+  direction: third-party
+  category: Communication
+  partner_url: null
+- partner_name: Microsoft Teams
+  partner: microsoft-teams
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/microsoft-teams
+  direction: third-party
+  category: Microsoft
+  partner_url: https://products.office.com/en-us/microsoft-teams/group-chat-software
+- partner_name: Microsoft Office 365
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/office-365
+  direction: third-party
+  category: Email
+  partner_url: https://www.office.com/
+- partner_name: Human in the Loop
+  partner: null
+  partner_match: null
+  partner_candidate: zapier
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/human-in-the-loop
+  direction: third-party
+  category: AI Assistants
+  partner_url: https://zapier.com/blog/human-in-the-loop-guide/
+- partner_name: CompanyCam
+  partner: companycam
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/companycam
+  direction: third-party
+  category: Images & Design
+  partner_url: http://companycam.com/
+- partner_name: Revolut Business
+  partner: revolut
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/revolut-for-business
+  direction: third-party
+  category: Payment Processing
+  partner_url: https://business.revolut.com/
+- partner_name: Procore
+  partner: procore
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/procore
+  direction: third-party
+  category: Project Management
+  partner_url: http://www.procore.com/
+- partner_name: Schedule It
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/schedule-it
+  direction: third-party
+  category: Scheduling & Booking
+  partner_url: https://www.scheduleit.co.uk/
+- partner_name: Paperless
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/paperless
+  direction: third-party
+  category: Documents
+  partner_url: https://paperless.io/
+- partner_name: Clappia
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/clappia
+  direction: third-party
+  category: Databases
+  partner_url: https://www.clappia.com/
+- partner_name: Work Wallet
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/work-wallet
+  direction: third-party
+  category: IT Operations
+  partner_url: https://www.work-wallet.com/
+- partner_name: Safepoint
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/joblogic/integrations/safepoint
+  direction: third-party
+  category: Task Management
+  partner_url: https://www.safepointapp.com/
 templates:
 - title: Create Joblogic customers from new Google Sheets rows
   url: https://zapier.com/apps/google-sheets/integrations/joblogic/1044553/create-joblogic-customers-from-new-google-sheets-rows
