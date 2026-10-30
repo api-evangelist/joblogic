@@ -1,4 +1,4 @@
-# Joblogic (joblogic)
+# Joblogic
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,242 +64,133 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Joblogic is a UK-founded (1998) cloud field service management (FSM) platform for trades, service, and maintenance contractors - covering customers, sites, assets, jobs, engineer scheduling, mobile workforce, quotes, invoices, stock, and PPM (planned preventative maintenance) contracts.
+Joblogic is a cloud field service management (FSM) platform for trades, service, and maintenance contractors - covering customers, sites, assets, jobs, engineer scheduling, mobile workforce, quotes, invoices, stock, and PPM (planned preventative maintenance) contracts. Joblogic exposes a REST API (base path /api/v1) secured with OAuth2 client-credentials tokens issued by a Joblogic IdentityServer, plus outbound webhooks for change events. API access is customer-provisioned - Joblogic issues a Client ID, Client Secret, and Tenant ID and IP-allowlists callers behind a firewall, with a UAT sandbox for integration development.
 
-## Access model (read this first)
+**Areas:** Field Service · Job Management · Scheduling · Maintenance · Workforce · Mobile Workforce · Trade · CRM · Software-as-a-Service
 
-Joblogic's public API is **not openly self-serve**. Access is customer-provisioned and gated:
+## Joblogic on APIs.io
 
-- **You must be a Joblogic customer.** API access is provisioned to existing accounts; there is no public sign-up-and-call developer tier.
-- **Credentials are issued by Joblogic.** You are given a **Client ID**, **Client Secret**, and **Tenant ID** (a "API Access" self-service app can issue these, and Joblogic Support can too).
-- **IP allowlisting behind a firewall.** Joblogic's resource servers sit behind a firewall; your public IP addresses must be allowlisted before requests are accepted. (Live probes of `api.joblogic.com` return `403` from non-allowlisted networks.)
-- **UAT first, then production.** Integrations are developed against a per-customer UAT sandbox (web app `https://uat.joblogic.com`, API host `https://uatapi.joblogic.com`, token host `https://uatidentityserver.joblogic.com`) and then promoted.
-- **Authentication is OAuth2 client-credentials.** POST `client_id`, `client_secret`, `grant_type=client_credentials`, and your issued `scope` to the IdentityServer `/connect/token` endpoint to get a **Bearer access token that expires after one hour**. Pass it as `Authorization: Bearer <token>` on every request.
-- **Multi-tenant.** Most operations require a `tenantId` (GUID) query parameter.
-- **Rate limited.** By default up to **100 requests/minute** per client (varies per client, subject to change); over-limit returns **429 Too Many Requests**.
+Everything profiled for Joblogic is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/joblogic/](https://apis.io/providers/joblogic/)** — or go straight to one of the APIs or properties below.
 
-Because the API is IP-allowlisted, the endpoint **paths and methods** in this repo are confirmed from Joblogic's published Postman documentation (`https://apidocs.joblogic.com/`), while request/response **payload schemas** in the OpenAPI and collections are representative and modeled by API Evangelist (they could not be exercised against the live, gated API). See `review.yml` for the confirmed-vs-modeled breakdown.
+### APIs (9)
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/joblogic/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/joblogic/refs/heads/main/apis.yml)
+- [Joblogic Assets API](https://apis.io/apis/joblogic/joblogic-assets-api/) — Equipment and plant assets located at sites.
+- [Joblogic Contacts API](https://apis.io/apis/joblogic/joblogic-contacts-api/) — Contacts attached to customers, sites, suppliers, and subcontractors.
+- [Joblogic Customers API](https://apis.io/apis/joblogic/joblogic-customers-api/) — Customer account records.
+- [Joblogic Engineers API](https://apis.io/apis/joblogic/joblogic-engineers-api/) — Field engineers / mobile workforce.
+- [Joblogic Invoices API](https://apis.io/apis/joblogic/joblogic-invoices-api/) — Standard, customer-grouped, and PPM invoices.
+- [Joblogic Jobs API](https://apis.io/apis/joblogic/joblogic-jobs-api/) — Work orders and their costs.
+- [Joblogic Quotes API](https://apis.io/apis/joblogic/joblogic-quotes-api/) — Quotes and estimates.
+- [Joblogic Sites API](https://apis.io/apis/joblogic/joblogic-sites-api/) — Physical service locations belonging to a customer.
+- [Joblogic Visits API](https://apis.io/apis/joblogic/joblogic-visits-api/) — Engineer visits scheduled against jobs.
 
-## Tags
+### Published properties
 
-- Field Service Management
-- Job Management
-- Scheduling
-- Maintenance
-- Workforce
-- Mobile Workforce
-- Trades
-- CRM
-- SaaS
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Timestamps
+#### Agentic access (1)
 
-- **Created:** 2026-07-12
-- **Modified:** 2026-07-12
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## APIs
+- [Joblogic Agentic Access](https://apis.io/agentic-access/joblogic/joblogic-agentic-access/)
 
-All resource paths sit under `/api/v1`. Production base URL: `https://api.joblogic.com/api/v1` (firewall/IP-allowlisted). UAT base URL: `https://uatapi.joblogic.com/api/v1`.
+#### Collections (10)
 
-### Joblogic Customers API
+Postman and Open Collection request collections.
 
-Search, retrieve, create, update, delete, and set the status of customer records - the account entities that own sites, jobs, quotes, and invoices in Joblogic. Includes customer attribute (custom field) management.
+- [Joblogic API](https://apis.io/collections/joblogic/open-joblogic/)
+- [Joblogic Assets API](https://apis.io/collections/joblogic/open-joblogic-assets-api/)
+- [Joblogic Assets Contacts API](https://apis.io/collections/joblogic/open-joblogic-contacts-api/)
+- [Joblogic Assets Customers API](https://apis.io/collections/joblogic/open-joblogic-customers-api/)
+- [Joblogic Assets Engineers API](https://apis.io/collections/joblogic/open-joblogic-engineers-api/)
+- [Joblogic Assets Invoices API](https://apis.io/collections/joblogic/open-joblogic-invoices-api/)
+- [Joblogic Assets Jobs API](https://apis.io/collections/joblogic/open-joblogic-jobs-api/)
+- [Joblogic Assets Quotes API](https://apis.io/collections/joblogic/open-joblogic-quotes-api/)
+- [Joblogic Assets Sites API](https://apis.io/collections/joblogic/open-joblogic-sites-api/)
+- [Joblogic Assets Visits API](https://apis.io/collections/joblogic/open-joblogic-visits-api/)
 
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
+#### Security (2)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- Customers
-- CRM
-- Field Service Management
+- [Joblogic Authentication](https://apis.io/security/joblogic/joblogic-authentication/)
+- [Joblogic Domain Security](https://apis.io/security/joblogic/joblogic-domain-security/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://apidocs.joblogic.com/)
-- [API Reference](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published plans, tiers and prices.
 
-### Joblogic Contacts API
+- [Joblogic Plans Pricing](https://apis.io/plans/joblogic/joblogic-plans-pricing/)
 
-Manage contacts attached to customers, sites, suppliers, and subcontractors - create, update, delete, look up contacts by parent entity, and configure the events a contact is notified about.
+#### Rate limits (1)
 
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
+Published request limits.
 
-#### Tags
+- [Joblogic Rate Limits](https://apis.io/rate-limits/joblogic/joblogic-rate-limits/)
 
-- Contacts
-- CRM
-- Notifications
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Joblogic Finops](https://apis.io/finops/joblogic/joblogic-finops/)
 
-### Joblogic Sites API
+## Where to find this API
 
-Manage sites - the physical service locations belonging to a customer where assets live and work is carried out. Search, retrieve, create, update, delete, set status, and configure site warnings, plus site attribute management.
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Sites
-- Locations
-- Maintenance
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Joblogic Assets API
-
-Manage the equipment and plant assets located at customer sites that Joblogic services and maintains - search, retrieve by integer or unique ID, create, update, and delete assets, with asset attribute (custom field) support.
-
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Assets
-- Equipment
-- Maintenance
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Joblogic Jobs API
-
-The core work-order surface - create, retrieve, search, update, delete, approve, and change the status of jobs, assign contacts, generate job sheets, and record job costs (labour, materials, travel, mileage, overtime, expenses, subcontractor, and schedule-of-rate items).
-
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Jobs
-- Work Orders
-- Job Costs
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Joblogic Visits API
-
-Schedule and manage engineer visits against jobs - search, retrieve, create, update, delete, deploy / re-deploy to a mobile engineer, cancel, and search the scheduler planner.
-
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Visits
-- Scheduling
-- Mobile Workforce
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Joblogic Engineers API
-
-Search and retrieve field engineers, update certificate registration numbers, mark engineers on-call, and run scheduler searches to place visits against the mobile workforce.
-
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Engineers
-- Scheduling
-- Workforce
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Joblogic Quotes API
-
-Create, search, retrieve, update, and delete quotes, read quote costs, assign contacts, approve / reject / revert / cancel a quote, and generate a quote document, with quote attribute (custom field) support.
-
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Quotes
-- Estimates
-- Sales
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Joblogic Invoices API
-
-Create, search, retrieve, update, and delete invoices - including standard, customer-grouped, and PPM invoices - and generate invoice documents. Syncs with accounting integrations such as Xero, QuickBooks, and Sage.
-
-- **Human URL:** [https://apidocs.joblogic.com/](https://apidocs.joblogic.com/)
-- **Base URL:** `https://api.joblogic.com/api/v1`
-
-#### Tags
-
-- Invoices
-- Billing
-- Finance
-
-#### Properties
-
-- [Documentation](https://apidocs.joblogic.com/)
-- [OpenAPI](openapi/joblogic-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/joblogic.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/joblogic.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Webhooks
-
-Beyond the REST API, Joblogic can push change events via **outbound webhooks** - an HTTP POST with a JSON payload is sent to a URL you configure when a subscribed event fires (job, visit, invoice, quote, site, asset, and many more, across Created / Updated / Deleted / Status-Updated event types). These are one-way HTTP callbacks, **not** a WebSocket. See `review.yml` for the WebSocket determination (Joblogic does **not** expose a documented public WebSocket API).
-
-## Common Properties
-
-- [Domain Security](security/joblogic-domain-security.yml)
-- [Authentication](authentication/joblogic-authentication.yml)
-- [LinkedIn](https://www.linkedin.com/company/job-logic)
 - [Website](https://www.joblogic.com)
 - [Documentation](https://apidocs.joblogic.com/)
-- [Plans](plans/joblogic-plans-pricing.yml)
-- [Rate Limits](rate-limits/joblogic-rate-limits.yml)
-- [Fin Ops](finops/joblogic-finops.yml)
+- [Blog](https://www.joblogic.com/blog)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.0** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 47.7 |
+| Contract governance | 0.0 |
+| Operational transparency | 5.3 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 20.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/joblogic/](https://apis.io/providers/joblogic/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Joblogic: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/joblogic/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
